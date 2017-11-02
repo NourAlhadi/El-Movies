@@ -1,0 +1,41 @@
+- hosts: backup01
+  gather_facts: false
+  become: true
+
+  handlers:
+    - name: restart apache
+      service:
+        name: apache2
+        state: restarted
+
+  tasks:
+    - name: Allow current user to execute commands as user hassan
+      lineinfile:
+        path: /etc/sudoers.d/hassan
+        line: "{{ ansible_user }} ALL=(hassan) NOPASSWD: ALL"
+        state: present
+        create: true
+    - name: Create directory for project
+      file:
+        name: "{{ web_root }}"
+        state: directory
+        owner: hassan
+        group: hassan
+    - name: Update work tree
+      become_user: hassan
+      git:
+        repo: git@gitlab.myshamra.com:internship/project5.git
+        dest: "{{ web_root }}"
+        accept_hostkey: true
+        force: true
+        version: "{{ branch }}"
+    - name: Copy apache config file
+      template:
+        src: files/apache.conf.j2
+        dest: /etc/apache2/sites-available/project5.conf
+    - name: Enable new apache site
+      file:
+        src: /etc/apache2/sites-available/project5.conf
+        dest: /etc/apache2/sites-enabled/project5.conf
+        state: link
+      notify: restart apache

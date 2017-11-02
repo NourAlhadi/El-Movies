@@ -1,0 +1,55 @@
+<VirtualHost *:80>
+	ServerName project5.internship.myshamra.com
+
+	ServerAdmin mohsen47@hotmail.co.uk
+	DocumentRoot {{ web_root }}/web
+
+	Header set X-Robots-Tag "noindex,nofollow"
+
+	ErrorLog ${APACHE_LOG_DIR}/project5_error.log
+	CustomLog ${APACHE_LOG_DIR}/project5_access.log combined
+
+  <Directory {{ web_root }}/web>
+    AllowOverride None
+    Order Allow,Deny
+    Allow from All
+		<IfModule mod_rewrite.c>
+      Options -MultiViews
+      RewriteEngine On
+	    RewriteCond %{REQUEST_FILENAME} !-f
+      RewriteRule ^(.*)$ app.php [QSA,L]
+	   </IfModule>
+  </Directory>
+	<Directory /var/www/html/shamra.dev>
+		Options FollowSymlinks
+	</Directory>
+	<Directory /var/www/html/shamra.dev/web/bundles>
+		<IfModule mod_rewrite.c>
+      RewriteEngine Off
+	   </IfModule>
+	</Directory>
+	<FilesMatch "urls-blacklist.yml">
+		Order Allow,Deny
+		Deny from All
+	</FilesMatch>
+	<FilesMatch "app_dev.php">
+    AuthName "Dev Only"
+    AuthType Basic
+    AuthUserFile /var/www/html/.htpasswd
+    require valid-user
+  </FilesMatch>
+    <Location "/cpanelbokamarain/*">
+    AuthType Basic
+    AuthName "admin only"
+    AuthUserFile /etc/apache2/.admin.htpasswd
+    require valid-user
+    </Location>
+    <Location "/bokamarain/*">
+    AuthType Basic
+    AuthName "admin only"
+    AuthUserFile /etc/apache2/.admin.htpasswd
+    require valid-user
+    </Location>
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
