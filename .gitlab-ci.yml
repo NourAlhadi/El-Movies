@@ -1,0 +1,20 @@
+stages:
+  - staging
+
+deploy:
+  stage: staging
+  image: gitlab.myshamra.com:4567/shamra/syndex/ansible:1.1
+
+  script:
+    - pip install requests
+    - ansible-playbook ci/deploy.yml -e web_root=/var/www/html/internship/project5 -e branch=master
+    - python ci/dns_add.py project5.internship $NAME_USERNAME $NAME_TOKEN
+
+  environment:
+    name: staging
+    url: http://project5.internship.myshamra.com
+  only:
+    - master
+  tags:
+    - ansible
+    - deploy
