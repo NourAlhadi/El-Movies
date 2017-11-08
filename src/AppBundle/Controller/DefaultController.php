@@ -18,6 +18,7 @@ class DefaultController extends Controller
         // this is service call
         //$myName = $this->get('App.GetMyName')->getName();
 
+
         return $this->render('default/index.html.twig', array("username"=>$name) );
     }
 

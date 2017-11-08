@@ -1,4 +1,22 @@
-project
-=======
+Project 5 / Shamra Internship
+=============================
 
-A Symfony project created on November 1, 2017, 2:45 pm.
+## By Nour Alhadi Mahmoud
+- - -
+
+## Movies website:
+
+### User:
+
+* Register new account.
+* Edit profile.
+* Browse movies and filter by category and Actors.
+* Rate movies.
+* comment on movies
+
+### Admin:
+
+* Browse, edit ,delete movies
+* Add new movie.
+* Add, edit, delete Actors.
+* Add , edit , delete categories.
