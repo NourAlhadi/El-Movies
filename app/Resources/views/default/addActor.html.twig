@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container blocks">
+        {{ form_start(form) }}
+            <div class="row">
+                {{ form_label(form.name, 'Actor Name', {'label_attr': {'class': 'col-sm-3'}}) }}
+                {{ form_widget(form.name , {'attr': {'class': 'col-sm-8', 'placeholder': 'Actor Name', 'value': ''} }) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+
+{% block stylesheets %}
+
+    <style>
+        label{
+            margin-top: 5px;
+        }
+
+        .blocks > form > .row{
+            margin: 10px;
+        }
+        button[type='submit']{
+            margin-left: 20px;
+        }
+
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+    </style>
+
+{% endblock %}

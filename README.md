@@ -2,7 +2,7 @@ Project 5 / Shamra Internship
 =============================
 
 ## By Nour Alhadi Mahmoud
-- - -
+
 
 ## Movies website:
 

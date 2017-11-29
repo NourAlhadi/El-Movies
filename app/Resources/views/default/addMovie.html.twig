@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="blocks">
+        {{ form_start(form) }}
+            <div class="row">
+                {{ form_label(form.title, 'Title', {'label_attr': {'class': 'col-sm-3'}}) }}
+                {{ form_widget(form.title , {'attr': {'class': 'col-sm-8', 'placeholder': 'Title', 'value': ''} }) }}
+            </div>
+
+            <div class="row">
+                {{ form_label(form.gender, 'Gender', {'label_attr': {'class': 'col-sm-3'}}) }}
+                {{ form_widget(form.gender , {'attr': {'class': 'col-sm-8', 'placeholder': 'Gender', 'value': ''} }) }}
+            </div>
+
+            <div class="row">
+                {{ form_label(form.year, 'Year', {'label_attr': {'class': 'col-sm-3'}}) }}
+                {{ form_widget(form.year , {'attr': {'class': 'col-sm-8', 'placeholder': 'Year', 'value': ''} }) }}
+            </div>
+
+            <div class="row">
+                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'col-sm-3'}}) }}
+                {{ form_widget(form.description , {'attr': {'class': 'col-sm-8', 'placeholder': 'Description', 'value': 'null'} }) }}
+            </div>
+
+            <div class="row">
+                {{ form_label(form.actors, 'Actors', {'label_attr': {'class': 'col-sm-3'}}) }}
+                {{ form_widget(form.actors , {'attr': {'class': 'col-sm-8', 'placeholder': 'Actors', 'value': 'null'} }) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+
+
+{% block stylesheets %}
+
+    <style>
+        label{
+            margin-top: 5px;
+        }
+
+        .blocks > form > .row{
+            margin: 10px;
+        }
+        button[type='submit']{
+            margin-left: 20px;
+        }
+
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+    </style>
+
+{% endblock %}

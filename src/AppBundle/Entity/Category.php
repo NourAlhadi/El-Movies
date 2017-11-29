@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Actor
+ * Category
  *
- * @ORM\Table(name="actor")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ActorRepository")
+ * @ORM\Table(name="category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  */
-class Actor
+class Category
 {
     /**
      * @var int
@@ -28,6 +28,13 @@ class Actor
      */
     private $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="details", type="text")
+     */
+    private $details;
+
 
     /**
      * Get id
@@ -44,7 +51,7 @@ class Actor
      *
      * @param string $name
      *
-     * @return Actor
+     * @return Category
      */
     public function setName($name)
     {
@@ -63,8 +70,28 @@ class Actor
         return $this->name;
     }
 
-    public function __toString() {
-        return $this->name;
+    /**
+     * Set details
+     *
+     * @param string $details
+     *
+     * @return Category
+     */
+    public function setDetails($details)
+    {
+        $this->details = $details;
+
+        return $this;
+    }
+
+    /**
+     * Get details
+     *
+     * @return string
+     */
+    public function getDetails()
+    {
+        return $this->details;
     }
 }
 

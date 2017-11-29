@@ -36,8 +36,9 @@ class Movie
     private $year;
 
     /**
-     * @var array
+     * @var \AppBundle\Entity\Actor
      *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Actor")
      */
     private $actors;
 
@@ -76,17 +77,20 @@ class Movie
     private $downVotes;
 
     /**
-     * @var array
+     * @var \AppBundle\Entity\Comment
      *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Comment")
      */
     private $comments;
 
 
 
     /**
-     * @ORM\Column(type="string")
+     * @var \AppBundle\Entity\Category
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category")
      */
-    private $gender;
+    private $categories;
 
     /**
      * Get id
@@ -149,7 +153,7 @@ class Movie
     /**
      * Set actors
      *
-     * @param array $actors
+     * @param \AppBundle\Entity\Actor $actors
      *
      * @return Movie
      */
@@ -163,7 +167,7 @@ class Movie
     /**
      * Get actors
      *
-     * @return array
+     * @return \AppBundle\Entity\Actor
      */
     public function getActors()
     {
@@ -293,7 +297,7 @@ class Movie
     /**
      * Set comments
      *
-     * @param array $comments
+     * @param \AppBundle\Entity\Comment $comments
      *
      * @return Movie
      */
@@ -307,7 +311,7 @@ class Movie
     /**
      * Get comments
      *
-     * @return array
+     * @return \AppBundle\Entity\Comment
      */
     public function getComments()
     {
@@ -315,19 +319,21 @@ class Movie
     }
 
     /**
-     * @return string
+     * @return \AppBundle\Entity\Category
      */
-    public function getGender()
+    public function getCategories()
     {
-        return $this->gender;
+        return $this->categories;
     }
 
     /**
-     * @param string $gender
+     * @param \AppBundle\Entity\Category $categories
      */
-    public function setGender($gender)
+    public function setCategories($categories)
     {
-        $this->gender = $gender;
+        $this->categories = $categories;
     }
+
+
 }
 

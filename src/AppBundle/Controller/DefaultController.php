@@ -2,22 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Actor;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Movie;
+use AppBundle\Form\ActorType;
+use AppBundle\Form\CategoryType;
 use AppBundle\Form\MovieType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Security;
 
-use FOS\UserBundle\Event\FilterUserResponseEvent;
-use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\Form\Factory\FactoryInterface;
-use FOS\UserBundle\FOSUserEvents;
-use FOS\UserBundle\Model\UserManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller
 {
@@ -31,9 +25,9 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/add", name="add")
+     * @Route("/admin/add/movie", name="add")
      */
-    public function addAction(Request $request){
+    public function addMovieAction(Request $request){
         $movie = new Movie();
         $form = $this -> createForm(MovieType::class,$movie);
 
@@ -46,7 +40,43 @@ class DefaultController extends Controller
             $em->flush();
         }
 
-        return $this->render('default/add.html.twig',["form"=>$form->createView()]);
+        return $this->render('default/addMovie.html.twig',["form"=>$form->createView()]);
     }
 
+    /**
+     * @Route("/admin/add/actor")
+     */
+    public function addActorAction(Request $request){
+
+        $actor = new Actor();
+        $form = $this -> createForm(ActorType::class,$actor);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $actor = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($actor);
+            $em->flush();
+        }
+        return $this->render('default/addActor.html.twig',["form"=>$form->createView()]);
+    }
+
+    /**
+     * @Route("/admin/add/category")
+     */
+    public function addCategoryAction(Request $request){
+        $category = new Category();
+        $form = $this -> createForm(CategoryType::class,$category);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $category = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+        }
+        return $this->render('default/addCategory.html.twig',["form"=>$form->createView()]);
+    }
 }
