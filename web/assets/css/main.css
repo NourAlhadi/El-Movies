@@ -1,0 +1,128 @@
+/* Global CSS */
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Courier 10 Pitch",TlwgMono,sans-serif;
+}
+
+body{
+    background-color: rgba(0,0,0,0.7);
+    padding-top: 75px!important;
+}
+
+
+
+/* Navigation bar edit */
+/***********************************/
+#search{
+    text-align: center!important;
+}
+
+#search input[type=text]{
+    width:386px !important;
+}
+
+
+@media screen and (max-width: 550px) {
+    #search input[type=text]{
+        width:240px !important;
+    }
+}
+
+/* Right Block Social Media */
+/**********************************/
+
+.righter{
+    position:fixed;
+    top:40%;
+    right:46px;
+    width: 400px!important;
+}
+
+/* Style all font awesome icons */
+.fa {
+    padding: 20px;
+    margin-top: 1px;
+    font-size: 30px;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+/* Facebook */
+.fa-facebook {
+    background: #3B5998;
+    color: white;
+}
+
+/* Twitter */
+.fa-twitter {
+    background: #55ACEE;
+    color: white;
+}
+
+.fa-google{
+    background: #f44336;
+    color:white;
+}
+
+/* Left Block / Fast Access */
+/********************************/
+
+.lefter{
+    position:fixed;
+    top:40%;
+    left: 0;
+    width: 200px!important;
+    background-color: #e7e7e7;
+    border: 2px solid rgba(0,0,0,0.5);
+    box-shadow: 2px 2px 2px 2px grey;
+    border-radius: 0 15px 15px 0;
+    z-index: 10;
+}
+
+.lefter li{
+    font-size: 16px;
+    list-style-type: none;
+    padding-left: 5px;
+    font-family:"Courier 10 Pitch",TlwgMono,sans-serif;
+}
+
+.checked {
+    color: orange;
+}
+
+
+@media screen and (max-width: 767px) {
+    .lefter {
+        display: none;
+    }
+}
+
+
+.bg-foot{
+    background-color: #2f2f2f; /* Black Gray */
+    color: #fff;
+    height: 80px;
+    padding-top: 10px;
+}
+
+.navbar-default{
+    background-color: #e7e7e7;
+}
+
+.blocks{
+    background-color: #e7e7e7;
+    border: 2px solid rgba(0,0,0,0.5);
+    box-shadow: 2px 2px 2px 2px grey;
+    border-radius: 15px;
+    width: 70%;
+    margin-left: 20%;
+    margin-bottom: 40px;
+    padding: 20px;
+}

@@ -2,40 +2,51 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\AppBundle;
-use AppBundle\Service\GetMyName;
+use AppBundle\Entity\Movie;
+use AppBundle\Form\MovieType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Security;
+
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\Form\Factory\FactoryInterface;
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/{name}", name="homepage", requirements={"name":"[a-zA-Z0-9]*"} )
+     * @Route("/", name="index")
      */
-    public function indexAction(Request $request, $name)
+    public function indexAction(Request $request)
     {
-        // this is service call
-        //$myName = $this->get('App.GetMyName')->getName();
-
-
-        return $this->render('default/index.html.twig', array("username"=>$name) );
+        return $this->render('default/index.html.twig');
     }
 
-    /**
-     * @Route("/about", name="about")
-     */
-    public function aboutAction(Request $request)
-    {
-        return $this->render('default/about.html.twig');
-    }
 
     /**
-     * @Route("/age/{age}", name="age", requirements={"age":"[0-9]*"})
+     * @Route("/add", name="add")
      */
-    public function ageAction(Request $request, $age)
-    {
-        return $this->render('default/age.html.twig',["age"=>$age]);
+    public function addAction(Request $request){
+        $movie = new Movie();
+        $form = $this -> createForm(MovieType::class,$movie);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $movie = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($movie);
+            $em->flush();
+        }
+
+        return $this->render('default/add.html.twig',["form"=>$form->createView()]);
     }
 
 }

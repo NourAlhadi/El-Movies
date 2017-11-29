@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row blocks">
+        <div class="row">
+            <h2 class="text-center"> El Movies - Watch movies the way you should </h2>
+            <hr>
+        </div>
+
+        <div class="fos_user_user_show">
+            <div class="row">
+                <p class="col-sm-2">Full Name:</p> <p class="col-sm-6"> {{ user.name }}</p>
+            </div>
+            <div class="row">
+                <p class="col-sm-2">Username:</p> <p class="col-sm-6"> {{ user.username }}</p>
+            </div>
+            <div class="row">
+                <p class="col-sm-2">Email:</p>  <p class="col-sm-6"> {{ user.email }}</p>
+            </div>
+            <a href="{{ path('fos_user_profile_edit') }}">
+                <input type="button" value="Edit Profile">
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block stylesheets %}
+    <style>
+        a{
+            color: rgba(0,0,0,0.7);
+        }
+        a:hover{
+            text-decoration: none;
+            color: rgba(0,0,0,0.7);
+        }
+        p{
+            margin-bottom: 20px;
+        }
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+
+    </style>
+{% endblock %}

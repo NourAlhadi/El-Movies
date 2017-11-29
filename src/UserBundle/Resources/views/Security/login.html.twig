@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row blocks">
+        {% if error %}
+
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <form action="{{ path("fos_user_security_check") }}" method="post">
+            {% if csrf_token %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            {% endif %}
+            <div class="row field">
+                <h2 class="text-center"> El Movies - Watch movies the way you should </h2>
+                <hr>
+            </div>
+
+            <div class="row field">
+                &nbsp;
+            </div>
+
+            <div class="row field">
+                <label for="username" class="col-sm-2">Username</label>
+                <input class="col-sm-8" type="text" id="username" name="_username" placeholder="Username" required="required" />
+            </div>
+
+            <div class="row field">
+                <label class="col-sm-2" for="password">Password</label>
+                <input class="col-sm-8" type="password" id="password" name="_password" placeholder="Password" required="required" />
+            </div>
+
+            <div class="row field">
+                <input class="col-sm-2" type="submit" id="_submit" name="_submit" value="Login" />
+                &nbsp;
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                <label for="remember_me">Remember me!!</label>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        label{
+            margin-top: 5px;
+        }
+
+        .field{
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        input[type='submit']{
+            margin-left: 5px;
+        }
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+    </style>
+{% endblock %}

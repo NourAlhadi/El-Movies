@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container blocks">
+        <div class="row">
+            <h2 class="text-center"> El Movies - Watch movies the way you should </h2>
+            <hr>
+        </div>
+
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+        <div class="row">
+            {{ form_label(form.name, 'Full Name', {'label_attr': {'class': 'col-sm-3'}}) }}
+            {{ form_widget(form.name , {'attr': {'class': 'col-sm-8', 'placeholder': 'Full Name', 'value': ''} }) }}
+        </div>
+
+        <div class="row">
+            {{ form_label(form.username, 'Userame', {'label_attr': {'class': 'col-sm-3'}}) }}
+            {{ form_widget(form.username , {'attr': {'class': 'col-sm-8', 'placeholder': 'Username', 'value': ''} }) }}
+        </div>
+
+        <div class="row">
+            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-sm-3'}}) }}
+            {{ form_widget(form.email , {'attr': {'class': 'col-sm-8', 'placeholder': 'Email', 'value': ''} }) }}
+        </div>
+
+        <div class="row">
+            {{ form_label(form.plainPassword.first, 'Password', {'label_attr': {'class': 'col-sm-3'}}) }}
+            {{ form_widget(form.plainPassword.first , {'attr': {'class': 'col-sm-8', 'placeholder': 'Password', 'value': ''} }) }}
+        </div>
+
+        <div class="row">
+            {{ form_label(form.plainPassword.second, 'Repeat Password', {'label_attr': {'class': 'col-sm-3'}}) }}
+            {{ form_widget(form.plainPassword.second , {'attr': {'class': 'col-sm-8', 'placeholder': 'Repeat Password', 'value': ''} }) }}
+        </div>
+
+
+        <div class="row">
+            <input class="col-sm-2" type="submit" value="Sign Up" />
+        </div>
+
+
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}
+
+
+{% block stylesheets %}
+
+    <style>
+        label{
+            margin-top: 5px;
+        }
+
+        .row{
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        input[type='submit']{
+            margin-left: 20px;
+        }
+
+        .txt{
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+    </style>
+
+{% endblock %}

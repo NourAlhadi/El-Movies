@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <div class="row blocks">
+        <div class="row">
+            <h2 class="text-center"> El Movies - Watch movies the way you should </h2>
+            <hr>
+        </div>
+
+        <p class="txt">
+            Thank you for joining us!! <br> now you are one of us!! <br> enjoy El Movies!!
+        </p>
+        <hr>
+        <p class="txt">
+            You can start watching movies by clicking our logo in the top left corner :D<br>
+            Or clicking this <a href="{{ path('index') }}">link</a>
+        </p>
+    </div>
+{% endblock %}
+
+
+
+
+{% block stylesheets %}
+
+    <style>
+        label{
+            margin-top: 5px;
+        }
+
+        .txt{
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+    </style>
+
+{% endblock %}

@@ -1,10 +1,11 @@
 {
-    "name": "nour/project",
+    "name": "nouralhadi/movies",
     "license": "proprietary",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "AppBundle\\": "src/AppBundle"
+            "AppBundle\\": "src/AppBundle",
+            "UserBundle\\": "src/UserBundle"
         },
         "classmap": [
             "app/AppKernel.php",
@@ -23,8 +24,8 @@
         "php": ">=5.5.9",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
+        "friendsofsymfony/user-bundle": "^2.0",
         "incenteev/composer-parameter-handler": "^2.0",
-        "knplabs/knp-markdown-bundle": "^1.5",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^3.0.2",
         "symfony/monolog-bundle": "^3.1.0",
@@ -67,8 +68,5 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": null
-    },
-    "repositories": {
-        "packagist": { "url": "https://packagist.org", "type": "composer" }
     }
 }
