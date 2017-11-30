@@ -25,7 +25,7 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/admin/add/movie", name="add")
+     * @Route("/admin/add/movie", name="add_movie")
      */
     public function addMovieAction(Request $request){
         $movie = new Movie();
@@ -44,7 +44,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/admin/add/actor")
+     * @Route("/admin/add/actor", name="add_actor")
      */
     public function addActorAction(Request $request){
 
@@ -63,7 +63,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/admin/add/category")
+     * @Route("/admin/add/category",name="add_category")
      */
     public function addCategoryAction(Request $request){
         $category = new Category();
@@ -78,5 +78,16 @@ class DefaultController extends Controller
             $em->flush();
         }
         return $this->render('default/addCategory.html.twig',["form"=>$form->createView()]);
+    }
+
+    /**
+     * @Route("/admin",name="admin")
+     */
+    public function adminAction(Request $request){
+        $em = $this -> getDoctrine() -> getManager();
+        $actors = $em->getRepository("AppBundle:Actor");
+        $categories = $em->getRepository("AppBundle:Category");
+        $movies = $em->getRepository("AppBundle:Movie");
+        //return $this->render();
     }
 }
