@@ -38,8 +38,9 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($movie);
             $em->flush();
+            $movie = new Movie();
+            $form = $this -> createForm(MovieType::class,$movie);
         }
-
         return $this->render('default/addMovie.html.twig',["form"=>$form->createView()]);
     }
 
@@ -76,6 +77,9 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush();
+
+            $category = new Category();
+            $form = $this -> createForm(CategoryType::class,$category);
         }
         return $this->render('default/addCategory.html.twig',["form"=>$form->createView()]);
     }

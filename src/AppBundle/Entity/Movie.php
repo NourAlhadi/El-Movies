@@ -65,16 +65,16 @@ class Movie
     /**
      * @var int
      *
-     * @ORM\Column(name="upVotes", type="integer", nullable=true, options={"default":0})
+     * @ORM\Column(name="totalCounts", type="integer", nullable=true, options={"default":0})
      */
-    private $upVotes;
+    private $totalCounts;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="downVotes", type="integer", nullable=true, options={"default":0})
+     * @ORM\Column(name="starsCount", type="integer", nullable=true, options={"default":0})
      */
-    private $downVotes;
+    private $starsCount;
 
     /**
      * @var \AppBundle\Entity\Comment
@@ -247,52 +247,37 @@ class Movie
     }
 
     /**
-     * Set upVotes
-     *
-     * @param integer $upVotes
-     *
-     * @return Movie
-     */
-    public function setUpVotes($upVotes)
-    {
-        $this->upVotes = $upVotes;
-
-        return $this;
-    }
-
-    /**
-     * Get upVotes
-     *
      * @return int
      */
-    public function getUpVotes()
+    public function getTotalCounts()
     {
-        return $this->upVotes;
+        return $this->totalCounts;
     }
 
     /**
-     * Set downVotes
-     *
-     * @param integer $downVotes
-     *
-     * @return Movie
+     * @param int $totalCounts
      */
-    public function setDownVotes($downVotes)
+    public function setTotalCounts($totalCounts)
     {
-        $this->downVotes = $downVotes;
-
-        return $this;
+        $this->totalCounts = $totalCounts;
     }
 
     /**
-     * Get downVotes
-     *
      * @return int
      */
-    public function getDownVotes()
+    public function getStarsCount()
     {
-        return $this->downVotes;
+        return $this->starsCount;
     }
+
+    /**
+     * @param int $starsCount
+     */
+    public function setStarsCount($starsCount)
+    {
+        $this->starsCount = $starsCount;
+    }
+
 
     /**
      * Set comments

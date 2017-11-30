@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,10 +17,22 @@ class MovieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('title')
-                ->add('gender')
                 ->add('year')
+                ->add('categories', EntityType::class, [
+                'class'     => 'AppBundle\Entity\Category',
+                'expanded'  => false,
+                'multiple'  => true,
+                ])
+                ->add('actors', EntityType::class, [
+                    'class'     => 'AppBundle\Entity\Actor',
+                    'expanded'  => false,
+                    'multiple'  => true,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.name', 'ASC');
+                    },
+                ])
                 ->add('description')
-                ->add('actors')
                 ->add('submit',SubmitType::class);
     }
     

@@ -4,14 +4,11 @@
 
     <div class="blocks">
         {{ form_start(form) }}
+            {#  testing entity type    #}
+            {# {{ dump(form.categories) }} #}
             <div class="row">
                 {{ form_label(form.title, 'Title', {'label_attr': {'class': 'col-sm-3'}}) }}
                 {{ form_widget(form.title , {'attr': {'class': 'col-sm-8', 'placeholder': 'Title', 'value': ''} }) }}
-            </div>
-
-            <div class="row">
-                {{ form_label(form.gender, 'Gender', {'label_attr': {'class': 'col-sm-3'}}) }}
-                {{ form_widget(form.gender , {'attr': {'class': 'col-sm-8', 'placeholder': 'Gender', 'value': ''} }) }}
             </div>
 
             <div class="row">
@@ -20,13 +17,18 @@
             </div>
 
             <div class="row">
-                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'col-sm-3'}}) }}
-                {{ form_widget(form.description , {'attr': {'class': 'col-sm-8', 'placeholder': 'Description', 'value': 'null'} }) }}
+                {{ form_label(form.categories, 'Categories', {'label_attr': {'class': 'col-sm-3'}}) }}
+                {{ form_widget(form.categories , {'attr': {'class': 'col-sm-8 sel', 'placeholder': 'Categories', 'value': ''} }) }}
             </div>
 
             <div class="row">
                 {{ form_label(form.actors, 'Actors', {'label_attr': {'class': 'col-sm-3'}}) }}
-                {{ form_widget(form.actors , {'attr': {'class': 'col-sm-8', 'placeholder': 'Actors', 'value': 'null'} }) }}
+                {{ form_widget(form.actors , {'attr': {'class': 'col-sm-8 sel', 'placeholder': 'Actors', 'value': 'null'} }) }}
+            </div>
+
+            <div class="row">
+                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'col-sm-3'}}) }}
+                {{ form_widget(form.description , {'attr': {'class': 'col-sm-8', 'placeholder': 'Description', 'value': 'null'} }) }}
             </div>
         {{ form_end(form) }}
     </div>
@@ -52,5 +54,10 @@
             border:1px solid rgba(0,0,0,0.8);
         }
     </style>
+
+{% endblock %}
+
+{% block javascripts %}
+
 
 {% endblock %}
