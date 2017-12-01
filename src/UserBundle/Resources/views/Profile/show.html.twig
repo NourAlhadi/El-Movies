@@ -20,6 +20,11 @@
             <a href="{{ path('fos_user_profile_edit') }}">
                 <input type="button" value="Edit Profile">
             </a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin') }}">
+                    <input type="button" value="Admin Dashboard">
+                </a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

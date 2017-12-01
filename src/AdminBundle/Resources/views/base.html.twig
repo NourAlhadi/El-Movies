@@ -46,12 +46,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">El Movies</a>
+            <a class="navbar-brand" href="{{ path('index') }}">El Movies</a>
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ app.user.name }} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li>
                         <a href="{{ path('fos_user_profile_show') }}"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -78,19 +78,19 @@
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                <li class="active">
+                <li id="navIndex" class="active">
                     <a href="{{ path('admin') }}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                 </li>
-                <li>
+                <li id="navMovies">
                     <a href="{{ path('admin_movies') }}"><i class="glyphicon glyphicon-film"></i> Movies</a>
                 </li>
-                <li>
+                <li id="navCategories">
                     <a href="{{ path('admin_categories') }}"><i class="fa fa-fw fa-th-list"></i> Categories</a>
                 </li>
-                <li>
+                <li id="navActors">
                     <a href="{{ path('admin_actors') }}"><i class="fa fa-fw fa-star"></i> Actors</a>
                 </li>
-                <li>
+                <li id="navUsers">
                     <a href="{{ path('admin_users') }}"><i class="fa fa-fw fa-users"></i> Users</a>
                 </li>
             </ul>
@@ -103,6 +103,7 @@
         {% block body %}
 
         {% endblock %}
+
     </div>
 
 </div>

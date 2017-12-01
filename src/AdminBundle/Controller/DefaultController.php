@@ -46,28 +46,28 @@ class DefaultController extends Controller
      * @Route("/admin/movies",name="admin_movies")
      */
     public function adminMoviesAction(Request $request){
-        return new Response('Movies - To Be Implemented');
+        return $this->render('@Admin/Default/movies.html.twig');
     }
 
     /**
      * @Route("/admin/categories",name="admin_categories")
      */
     public function adminCategoriesAction(Request $request){
-        return new Response('Categories - To Be Implemented');
+        return $this->render('@Admin/Default/categories.html.twig');
     }
 
     /**
      * @Route("/admin/actors",name="admin_actors")
      */
     public function adminActorsAction(Request $request){
-        return new Response('Actors - To Be Implemented');
+        return $this->render('@Admin/Default/actors.html.twig');
     }
 
     /**
      * @Route("/admin/users",name="admin_users")
      */
     public function adminUsersAction(Request $request){
-        return new Response('Users - To Be Implemented');
+        return $this->render('@Admin/Default/users.html.twig');
     }
 
 }
