@@ -22,15 +22,80 @@
         </div>
         <!-- /.row -->
 
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Current Categories</h3>
+                <small> * Click on category to redirect to movies from this category, i.e. movies search</small>
+            </div>
+            <div class="panel-body">
+                {% for cat in categories|batch(6) %}
+                        {% for i in cat %}
+                            <div class="col-sm-2 cat">
+                                {{ i.name }}
+                            </div>
+                        {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
 
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Add a new Category!!</h3>
+            </div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                    <div class="row">
+                        {{ form_label(form.name, 'Category Name', {'label_attr': {'class': 'col-sm-2'}}) }}
+                        {{ form_widget(form.name , {'attr': {'class': 'col-sm-8', 'placeholder': 'Category Name', 'value': ''} }) }}
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Chart of Movies/Categories Relation</h3>
+            </div>
+            <div class="col-sm-12 panel-body">
+                <canvas id="myChart" width="80%" height="40px"></canvas>
+            </div>
+        </div>
 
     </div>
     <!-- /.container-fluid -->
 
 
-
 {% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .cat{
+            border-radius: 15px;
+            box-shadow: 5px 5px 5px 5px #AAA;
+            background-color: #DDD;
+            margin: 20px 10px;
+            text-align: center;
+            padding: 10px 0;
+            color: #2f2f2f;
+            font-weight: bold;
+        }
+
+        label{
+            margin-top: 5px;
+        }
+
+        .blocks > form > .row{
+            margin: 10px;
+        }
+        button[type='submit']{
+            margin-left: 20px;
+        }
+
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+    </style>
+{% endblock %}
 
 {% block javascripts %}
     <script>
@@ -40,4 +105,46 @@
         $("#navActors").removeClass("active");
         $("#navUsers").removeClass("active");
     </script>
+
+    <script>
+
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [
+                    {%  for cat in categories %}
+                        '{{ cat }}',
+                    {%  endfor %}
+                ],
+                datasets: [{
+                    label: 'Number of registered:',
+
+                    data: [
+                        {%  for cat in categories %}
+                            {% set cnt = 0 %}
+                            {%  for movie in movies %}
+                                {%  if cat in movie.categories  %}
+                                    {% set cnt = cnt + 1 %}
+                                {%  endif  %}
+                            {%  endfor %}
+                            '{{ cnt }}',
+                        {%  endfor %}
+                    ],
+                    backgroundColor: [
+                        {%  for cat in categories %}
+                        'rgba({{ random(255) }},{{ random(255) }},{{ random(255) }},0.2)',
+                        {%  endfor %}
+                        ],
+                    borderColor: [
+                        {%  for cat in categories %}
+                        'rgba({{ random(255) }},{{ random(255) }},{{ random(255) }},1)',
+                        {%  endfor %}
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
+
 {% endblock %}

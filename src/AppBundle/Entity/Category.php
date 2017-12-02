@@ -28,12 +28,6 @@ class Category
      */
     private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="details", type="text")
-     */
-    private $details;
 
 
     /**
@@ -70,29 +64,6 @@ class Category
         return $this->name;
     }
 
-    /**
-     * Set details
-     *
-     * @param string $details
-     *
-     * @return Category
-     */
-    public function setDetails($details)
-    {
-        $this->details = $details;
-
-        return $this;
-    }
-
-    /**
-     * Get details
-     *
-     * @return string
-     */
-    public function getDetails()
-    {
-        return $this->details;
-    }
 
     public function __toString() {
         return $this->name;

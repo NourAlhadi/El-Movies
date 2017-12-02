@@ -10,6 +10,7 @@ use AppBundle\Form\CategoryType;
 use AppBundle\Form\MovieType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -53,7 +54,28 @@ class DefaultController extends Controller
      * @Route("/admin/categories",name="admin_categories")
      */
     public function adminCategoriesAction(Request $request){
-        return $this->render('@Admin/Default/categories.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $cat = $em->getRepository('AppBundle:Category')->findBy([], ['name' => 'ASC']);
+        $movies = $em->getRepository('AppBundle:Movie')->findAll();
+
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class,$category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $category = $form->getData();
+            $em->persist($category);
+            $em->flush();
+            $category = new Category();
+            $form = $this->createForm(CategoryType::class,$category);
+        }
+
+
+        return $this->render('@Admin/Default/categories.html.twig',[
+            "categories" => $cat,
+            "form" => $form->createView(),
+            "movies"=>$movies
+        ]);
     }
 
     /**
