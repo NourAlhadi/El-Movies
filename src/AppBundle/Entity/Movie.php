@@ -52,27 +52,22 @@ class Movie
     /**
      * @var int
      *
-     * @ORM\Column(name="viewCount", type="integer", nullable=true, options={"default":0})
+     * @ORM\Column(name="view_count", type="integer", nullable=true, options={"default":0})
      */
     private $viewCount;
 
-    /**
-     * @var array
-     *
-     */
-    private $tags;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="totalCounts", type="integer", nullable=true, options={"default":0})
+     * @ORM\Column(name="total_counts", type="integer", nullable=true, options={"default":0})
      */
     private $totalCounts;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="starsCount", type="integer", nullable=true, options={"default":0})
+     * @ORM\Column(name="stars_count", type="integer", nullable=true, options={"default":0})
      */
     private $starsCount;
 
@@ -92,10 +87,19 @@ class Movie
      */
     private $categories;
 
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="add_date", type="datetime", nullable=true, options={"default":"CURRENT_TIMESTAMP"})
+     */
+    private $addDate;
+
+
     /**
      * Get id
      *
-     * @return int
+     * @return intmodify
      */
     public function getId()
     {
@@ -222,29 +226,6 @@ class Movie
         return $this->viewCount;
     }
 
-    /**
-     * Set tags
-     *
-     * @param array $tags
-     *
-     * @return Movie
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
-     * Get tags
-     *
-     * @return array
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
 
     /**
      * @return int
@@ -319,6 +300,24 @@ class Movie
         $this->categories = $categories;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getAddMonth()
+    {
+        return $this->addDate;
+    }
+
+    /**
+     * @param \DateTime $addDate
+     */
+    public function setAddMonth($addDate)
+    {
+        if ($this->addDate == null)
+            $this->addDate = new \DateTime('now');
+        else
+            $this->addDate = $addDate;
+    }
 
 }
 

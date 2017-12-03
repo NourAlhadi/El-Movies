@@ -54,10 +54,35 @@
 
         <div class="row panel panel-default">
             <div class="panel-heading">
+                <h3>Edit/Remove a Category!!</h3>
+            </div>
+            <div class="panel-body">
+                {{ form_start(eform) }}
+                    <div class="row">
+                        {{ form_label(eform.categories, 'Select Category', {'label_attr': {'class': 'col-sm-2'}}) }}
+                        {{ form_widget(eform.categories , {'attr': {'class': 'col-sm-8'} }) }}
+                    </div>
+
+                    <div class="row">
+                        {{ form_label(eform.new_name, 'Category New Name', {'label_attr': {'class': 'col-sm-2'}}) }}
+                        {{ form_widget(eform.new_name , {'attr': {'class': 'col-sm-8', 'placeholder': 'Category New Name', 'value': ''} }) }}
+                    </div>
+
+                    <div class="row">
+                        {{ form_widget(eform.edit , {'attr': {'class': 'col-sm-1', 'value': 'Edit'} }) }}
+                        {{ form_widget(eform.remove , {'attr': {'class': 'col-sm-1', 'value': 'Remove'} }) }}
+                    </div>
+                    {{ form_row(eform._token) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <div class="row panel panel-default">
+            <div class="panel-heading">
                 <h3>Chart of Movies/Categories Relation</h3>
             </div>
             <div class="col-sm-12 panel-body">
-                <canvas id="myChart" width="80%" height="40px"></canvas>
+                <canvas id="myChart" width="60%" height="25px"></canvas>
             </div>
         </div>
 
@@ -84,7 +109,7 @@
             margin-top: 5px;
         }
 
-        .blocks > form > .row{
+        .panel-body > form > .row{
             margin: 10px;
         }
         button[type='submit']{

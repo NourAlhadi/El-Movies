@@ -2,17 +2,14 @@
 
 namespace AdminBundle\Controller;
 
-use AppBundle\Entity\Actor;
 use AppBundle\Entity\Category;
-use AppBundle\Entity\Movie;
-use AppBundle\Form\ActorType;
 use AppBundle\Form\CategoryType;
-use AppBundle\Form\MovieType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -54,27 +51,76 @@ class DefaultController extends Controller
      * @Route("/admin/categories",name="admin_categories")
      */
     public function adminCategoriesAction(Request $request){
+
+        // Getting Entity Manager / All Categories on System (Ordered) / All Movies
+        // Needed for later actions
         $em = $this->getDoctrine()->getManager();
         $cat = $em->getRepository('AppBundle:Category')->findBy([], ['name' => 'ASC']);
         $movies = $em->getRepository('AppBundle:Movie')->findAll();
 
+
+        // Setting Up the Add Category Form
         $category = new Category();
         $form = $this->createForm(CategoryType::class,$category);
         $form->handleRequest($request);
 
+        // Setting Up the Edit / Remove Category Form
+        $defaultData = null;
+        $eform = $this->createFormBuilder($defaultData)
+            ->add('categories',EntityType::class,array(
+                'class' => 'AppBundle\Entity\Category',
+                'data' => $cat
+            ))
+            ->add('new_name',TextType::class,array(
+                'required' => false
+            ))
+            ->add('edit',SubmitType::class)
+            ->add('remove',SubmitType::class)
+            ->getForm();
+
+        $eform->handleRequest($request);
+
+        // Handling Category Add
         if ($form->isSubmitted() && $form->isValid()){
             $category = $form->getData();
-            $em->persist($category);
-            $em->flush();
-            $category = new Category();
-            $form = $this->createForm(CategoryType::class,$category);
+            $fnd = $em->getRepository('AppBundle:Category')
+                ->findOneBy(array('name'=>$category->getName()));
+            if (is_null($fnd)) {
+                $em->persist($category);
+                $em->flush();
+                $category = new Category();
+                $form = $this->createForm(CategoryType::class, $category);
+            }
         }
 
+        // Handling Category Remove
+        if ($eform->isSubmitted() && $eform->isValid()){
+            $ecat = $eform->get('categories')->getData();
+            $ecat = $ecat->getId();
+            $ecat = $em->getRepository('AppBundle:Category')->find($ecat);
+
+            if ($eform->get('edit')->isClicked()){
+                $new_name = $eform->get('new_name')->getData();
+                $ecat->setName($new_name);
+                $fnd = $em->getRepository('AppBundle:Category')
+                    ->findOneBy(array('name'=>$ecat->getName()));
+                if (is_null($fnd)) {
+                    $em->persist($ecat);
+                    $em->flush();
+                    $em->refresh($ecat);
+                }
+            }
+            if ($eform->get('remove')->isClicked()){
+                $em->remove($ecat);
+                $em->flush();
+            }
+        }
 
         return $this->render('@Admin/Default/categories.html.twig',[
             "categories" => $cat,
             "form" => $form->createView(),
-            "movies"=>$movies
+            "movies"=>$movies,
+            "eform"=>$eform->createView()
         ]);
     }
 
