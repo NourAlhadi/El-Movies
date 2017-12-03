@@ -7,6 +7,8 @@
       service:
         name: apache2
         state: restarted
+  vars_files:
+    - secrets.yml
 
   tasks:
     - name: Allow current user to execute commands as user hassan
@@ -29,6 +31,70 @@
         accept_hostkey: true
         force: true
         version: "{{ branch }}"
+    - name: Download composer installer
+      get_url:
+        url: https://getcomposer.org/installer
+        dest: /tmp/composer-setup.php
+    - name: install php, apache2 and some php extensions
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - php
+        - apache2
+        - libapache2-mod-php
+        - php-xml
+        - php-bcmath
+        - php-mbstring
+    - name: start apache2
+      service:
+        name: apache2
+        state: started
+    - name: Install composer
+      shell: |
+        php /tmp/composer-setup.php --filename=composer --install-dir=/usr/local/bin
+        creates=/usr/local/bin/composer
+    - name: setup parameters file
+      template:
+        src: files/parameters.yml.j2
+        dest: "{{ web_root }}/app/config/parameters.yml"
+        owner: hassan
+        group: www-data
+        mode: 0640
+    - name: Run composer
+      become_user: hassan
+      shell: |
+        composer install -n
+        chdir="{{ web_root }}"
+      register: comp
+      changed_when: comp.stdout.find("No thing to install or update") >= 0
+    - name: update schema
+      shell: |
+        php bin/console doctrine:schema:update --force
+        chdir="{{ web_root }}"
+    - name: install assets
+      shell: |
+        php bin/console assets:install --symlink
+        chdir="{{ web_root }}"
+    - name: clear cache for dev and prod
+      shell: |
+        php bin/console cache:clear --env={{ item }}
+        chdir="{{ web_root }}"
+      with_items:
+        - prod
+        - dev
+    - name: Fix permissions for cache, logs and sessions directories
+      file:
+        name: "{{ web_root }}/var/{{ item }}"
+        state: directory
+        mode: 0755
+        recurse: true
+        owner: www-data
+        group: www-data
+      with_items:
+        - cache
+        - logs
+        - sessions
     - name: Copy apache config file
       template:
         src: files/apache.conf.j2
