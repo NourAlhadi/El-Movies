@@ -2,7 +2,9 @@
 
 namespace AdminBundle\Controller;
 
+use AppBundle\Entity\Actor;
 use AppBundle\Entity\Category;
+use AppBundle\Form\ActorType;
 use AppBundle\Form\CategoryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,7 +18,7 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/admin",name="admin")
+     * @Route("/admin/",name="admin")
      */
     public function adminAction(Request $request){
         $em = $this -> getDoctrine() -> getManager();
@@ -65,8 +67,7 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         // Setting Up the Edit / Remove Category Form
-        $defaultData = null;
-        $eform = $this->createFormBuilder($defaultData)
+        $eform = $this->createFormBuilder(null)
             ->add('categories',EntityType::class,array(
                 'class' => 'AppBundle\Entity\Category',
                 'data' => $cat
@@ -91,9 +92,10 @@ class DefaultController extends Controller
                 $category = new Category();
                 $form = $this->createForm(CategoryType::class, $category);
             }
+            return $this->redirectToRoute('admin_categories');
         }
 
-        // Handling Category Remove
+        // Handling Category Edit / Remove
         if ($eform->isSubmitted() && $eform->isValid()){
             $ecat = $eform->get('categories')->getData();
             $ecat = $ecat->getId();
@@ -114,13 +116,14 @@ class DefaultController extends Controller
                 $em->remove($ecat);
                 $em->flush();
             }
+            return $this->redirectToRoute('admin_categories');
         }
 
         return $this->render('@Admin/Default/categories.html.twig',[
             "categories" => $cat,
-            "form" => $form->createView(),
             "movies"=>$movies,
-            "eform"=>$eform->createView()
+            "form" => $form->createView(),
+            "eform"=>$eform->createView(),
         ]);
     }
 
@@ -128,7 +131,78 @@ class DefaultController extends Controller
      * @Route("/admin/actors",name="admin_actors")
      */
     public function adminActorsAction(Request $request){
-        return $this->render('@Admin/Default/actors.html.twig');
+
+        // Getting Entity Manager / All Actors on System (Ordered) / All Movies
+        // Needed for later actions
+        $em = $this->getDoctrine()->getManager();
+        $actors = $em->getRepository('AppBundle:Actor')->findBy([], ['name' => 'ASC']);
+        $movies = $em->getRepository('AppBundle:Movie')->findAll();
+
+
+        // Setting Up the Add Actor Form
+        $actor = new Actor();
+        $form = $this->createForm(ActorType::class,$actor);
+        $form->handleRequest($request);
+
+        // Setting Up the Edit / Remove Category Form
+        $eform = $this->createFormBuilder(null)
+            ->add('actors',EntityType::class,array(
+                'class' => 'AppBundle\Entity\Actor',
+                'data' => $actors
+            ))
+            ->add('new_name',TextType::class,array(
+                'required' => false
+            ))
+            ->add('edit',SubmitType::class)
+            ->add('remove',SubmitType::class)
+            ->getForm();
+
+        $eform->handleRequest($request);
+
+        // Handling Actor Add
+        if ($form->isSubmitted() && $form->isValid()){
+            $actor = $form->getData();
+            $fnd = $em->getRepository('AppBundle:Actor')
+                ->findOneBy(array('name'=>$actor->getName()));
+            if (is_null($fnd)) {
+                $em->persist($actor);
+                $em->flush();
+                $actor = new Actor();
+                $form = $this->createForm(ActorType::class, $actor);
+            }
+            return $this->redirectToRoute('admin');
+        }
+
+        // Handling Actors Edit / Remove
+        if ($eform->isSubmitted() && $eform->isValid()){
+            $eact = $eform->get('actors')->getData();
+            $eact = $eact->getId();
+            $eact = $em->getRepository('AppBundle:Actor')->find($eact);
+
+            if ($eform->get('edit')->isClicked()){
+                $new_name = $eform->get('new_name')->getData();
+                $eact->setName($new_name);
+                $fnd = $em->getRepository('AppBundle:Actor')
+                    ->findOneBy(array('name'=>$eact->getName()));
+                if (is_null($fnd)) {
+                    $em->persist($eact);
+                    $em->flush();
+                    $em->refresh($eact);
+                }
+            }
+            if ($eform->get('remove')->isClicked()){
+                $em->remove($eact);
+                $em->flush();
+            }
+            return $this->redirectToRoute('admin');
+        }
+
+        return $this->render('@Admin/Default/actors.html.twig',[
+            "actors" => $actors,
+            "movies"=>$movies,
+            "form" => $form->createView(),
+            "eform"=>$eform->createView(),
+        ]);
     }
 
     /**

@@ -22,15 +22,105 @@
         </div>
         <!-- /.row -->
 
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Current Actors</h3>
+                <small> * Click on actor's name to redirect to movies by this actor, i.e. movies search</small>
+            </div>
+            <div class="panel-body">
+                {% for act in actors|batch(6) %}
+                    {% for i in act %}
+                        <div class="col-sm-2 cat">
+                            {{ i.name }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
 
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Add a new Actor!!</h3>
+            </div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    {{ form_label(form.name, 'Actor Name', {'label_attr': {'class': 'col-sm-2'}}) }}
+                    {{ form_widget(form.name , {'attr': {'class': 'col-sm-8', 'placeholder': 'Actor Name', 'value': ''} }) }}
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Edit/Remove a Actor!!</h3>
+            </div>
+            <div class="panel-body">
+                {{ form_start(eform) }}
+                <div class="row">
+                    {{ form_label(eform.actors, 'Select Actor', {'label_attr': {'class': 'col-sm-2'}}) }}
+                    {{ form_widget(eform.actors , {'attr': {'class': 'col-sm-8'} }) }}
+                </div>
+
+                <div class="row">
+                    {{ form_label(eform.new_name, 'Category New Name', {'label_attr': {'class': 'col-sm-2'}}) }}
+                    {{ form_widget(eform.new_name , {'attr': {'class': 'col-sm-8', 'placeholder': 'Actor New Name', 'value': ''} }) }}
+                </div>
+
+                <div class="row">
+                    {{ form_widget(eform.edit , {'attr': {'class': 'col-sm-1', 'value': 'Edit'} }) }}
+                    {{ form_widget(eform.remove , {'attr': {'class': 'col-sm-1', 'value': 'Remove'} }) }}
+                </div>
+                {{ form_row(eform._token) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Chart of Movies/Actors Relation</h3>
+            </div>
+            <div class="col-sm-12 panel-body">
+                <canvas id="myChart" width="60%" height="25px"></canvas>
+            </div>
+        </div>
 
     </div>
     <!-- /.container-fluid -->
 
 
-
 {% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .cat{
+            border-radius: 15px;
+            box-shadow: 5px 5px 5px 5px #AAA;
+            background-color: #DDD;
+            margin: 20px 10px;
+            text-align: center;
+            padding: 10px 0;
+            color: #2f2f2f;
+            font-weight: bold;
+        }
+
+        label{
+            margin-top: 5px;
+        }
+
+        .panel-body > form > .row{
+            margin: 10px;
+        }
+        button[type='submit']{
+            margin-left: 20px;
+        }
+
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+    </style>
+{% endblock %}
 
 {% block javascripts %}
     <script>
@@ -40,4 +130,46 @@
         $("#navActors").removeClass("active").addClass("active");
         $("#navUsers").removeClass("active");
     </script>
+
+    <script>
+
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [
+                    {%  for act in actors %}
+                    '{{ act }}',
+                    {%  endfor %}
+                ],
+                datasets: [{
+                    label: 'Number of registered:',
+
+                    data: [
+                        {%  for act in actors %}
+                            {% set cnt = 0 %}
+                            {%  for movie in movies %}
+                                {%  if act in movie.actors  %}
+                                    {% set cnt = cnt + 1 %}
+                                {%  endif  %}
+                            {%  endfor %}
+                            '{{ cnt }}',
+                        {%  endfor %}
+                    ],
+                    backgroundColor: [
+                        {%  for act in actors %}
+                        'rgba({{ random(255) }},{{ random(255) }},{{ random(255) }},0.2)',
+                        {%  endfor %}
+                    ],
+                    borderColor: [
+                        {%  for act in actors %}
+                        'rgba({{ random(255) }},{{ random(255) }},{{ random(255) }},1)',
+                        {%  endfor %}
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
+
 {% endblock %}

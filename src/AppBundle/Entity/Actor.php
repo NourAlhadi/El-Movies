@@ -21,6 +21,7 @@ class Actor
      */
     private $id;
 
+
     /**
      * @var string
      *
