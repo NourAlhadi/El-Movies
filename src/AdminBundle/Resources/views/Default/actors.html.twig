@@ -27,7 +27,7 @@
                 <h3>Current Actors</h3>
                 <small> * Click on actor's name to redirect to movies by this actor, i.e. movies search</small>
             </div>
-            <div class="panel-body">
+            <div class="panel-body listing">
                 {% for act in actors|batch(6) %}
                     {% for i in act %}
                         <div class="col-sm-2 cat">
@@ -118,6 +118,11 @@
 
         hr{
             border:1px solid rgba(0,0,0,0.8);
+        }
+
+        .listing{
+            max-height: 400px;
+            overflow: scroll;
         }
     </style>
 {% endblock %}

@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Role\Role;
 
 class DefaultController extends Controller
 {
@@ -209,7 +210,55 @@ class DefaultController extends Controller
      * @Route("/admin/users",name="admin_users")
      */
     public function adminUsersAction(Request $request){
-        return $this->render('@Admin/Default/users.html.twig');
+
+        // Getting Entity Manager and all users on system
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('UserBundle:User')->findBy([],['name' => 'ASC']);
+
+        return $this->render('@Admin/Default/users.html.twig',["users"=>$users]);
+    }
+
+    /**
+     * @Route("/admin/user/remove/{username}",name="admin_user_remove")
+     */
+    public function adminUserRemoveAction(Request $request,$username){
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($username);
+        $userManager->deleteUser($user);
+        return $this->redirectToRoute('admin_users');
+    }
+
+    /**
+     * @Route("/admin/user/suspend/{username}",name="admin_user_suspend")
+     */
+    public function adminUserSuspendAction(Request $request,$username){
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($username);
+        $user->setEnabled(1 - $user->isEnabled());
+        $userManager->updateUser($user);
+        return $this->redirectToRoute('admin_users');
+    }
+
+    /**
+     * @Route("/admin/user/add/admin/{username}",name="admin_user_add_admin")
+     */
+    public function adminUserAddAdminAction(Request $request,$username){
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($username);
+        $user->addRole('ROLE_ADMIN');
+        $userManager->updateUser($user);
+        return $this->redirectToRoute('admin_users');
+    }
+
+    /**
+     * @Route("/admin/user/remove/admin/{username}",name="admin_user_remove_admin")
+     */
+    public function adminUserRemoveAdminAction(Request $request,$username){
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($username);
+        $user->removeRole('ROLE_ADMIN');
+        $userManager->updateUser($user);
+        return $this->redirectToRoute('admin_users');
     }
 
 }

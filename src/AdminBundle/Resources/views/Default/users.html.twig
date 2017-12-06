@@ -22,6 +22,66 @@
         </div>
         <!-- /.row -->
 
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Users On System</h3>
+            </div>
+            <div class="panel-body listing">
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        {% if user.id == 0 and app.user.id != 0 %}
+                                            You can't do actions on owner
+                                        {% else %}
+                                            {% if user.id != app.user.id %}
+                                                <a href="{{ path('admin_user_remove',{"username": user.username }) }}"><button>Remove</button></a>
+                                            {% endif %}
+                                            <a href="{{ path('admin_user_suspend',{"username": user.username }) }}">
+                                                {% if user.isEnabled == true %}
+                                                    <button>Deactivate</button>
+                                                {% else %}
+                                                    <button>Activate</button>
+                                                {% endif %}
+                                            </a>
+                                            <a href="{{ path('admin_user_add_admin',{"username": user.username }) }}">
+                                                {% if 'ROLE_ADMIN' in user.roles %}
+                                                {% else %}
+                                                    <button>Make Admin</button>
+                                                {% endif %}
+                                            </a>
+                                            {%  if app.user.id == 0 %}
+                                                <a href="{{ path('admin_user_remove_admin',{"username": user.username }) }}">
+                                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                                        <button>Remove Admin</button>
+                                                    {% else %}
+                                                    {% endif %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     </div>
@@ -31,6 +91,15 @@
 
 {% endblock %}
 
+{% block stylesheets %}
+<style>
+    .table-responsive{
+        max-height: 600px;
+        overflow: scroll;
+    }
+
+</style>
+{% endblock %}
 {% block javascripts %}
     <script>
         $("#navIndex").removeClass("active");

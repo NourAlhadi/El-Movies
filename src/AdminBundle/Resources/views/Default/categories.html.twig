@@ -27,7 +27,7 @@
                 <h3>Current Categories</h3>
                 <small> * Click on category to redirect to movies from this category, i.e. movies search</small>
             </div>
-            <div class="panel-body">
+            <div class="panel-body listing">
                 {% for cat in categories|batch(6) %}
                         {% for i in cat %}
                             <div class="col-sm-2 cat">
@@ -118,6 +118,10 @@
 
         hr{
             border:1px solid rgba(0,0,0,0.8);
+        }
+        .listing{
+            max-height: 400px;
+            overflow: scroll;
         }
     </style>
 {% endblock %}
