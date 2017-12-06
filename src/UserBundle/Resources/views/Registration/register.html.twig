@@ -10,9 +10,16 @@
 
         {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
 
+
         <div class="row">
             {{ form_label(form.name, 'Full Name', {'label_attr': {'class': 'col-sm-3'}}) }}
             {{ form_widget(form.name , {'attr': {'class': 'col-sm-8', 'placeholder': 'Full Name', 'value': ''} }) }}
+        </div>
+
+        <div class="row">
+            {% if form_errors(form.name) != "" %}
+                <div class="alert alert-danger">There is an error in this filed, please fix it.</div>
+            {% endif %}
         </div>
 
         <div class="row">
@@ -21,8 +28,21 @@
         </div>
 
         <div class="row">
+            {% if form_errors(form.username) != "" %}
+                <div class="alert alert-danger">There is an error in this filed, please fix it.</div>
+            {% endif %}
+        </div>
+
+        <div class="row">
             {{ form_label(form.email, 'Email', {'label_attr': {'class': 'col-sm-3'}}) }}
             {{ form_widget(form.email , {'attr': {'class': 'col-sm-8', 'placeholder': 'Email', 'value': ''} }) }}
+
+        </div>
+
+        <div class="row">
+            {% if form_errors(form.email) != "" %}
+                <div class="alert alert-danger">There is an error in this filed, please fix it.</div>
+            {% endif %}
         </div>
 
         <div class="row">
@@ -31,8 +51,20 @@
         </div>
 
         <div class="row">
+            {% if form_errors(form.plainPassword.first) != ""  %}
+                <div class="alert alert-danger">There is an error in this filed, please fix it.</div>
+            {% endif %}
+        </div>
+
+        <div class="row">
             {{ form_label(form.plainPassword.second, 'Repeat Password', {'label_attr': {'class': 'col-sm-3'}}) }}
             {{ form_widget(form.plainPassword.second , {'attr': {'class': 'col-sm-8', 'placeholder': 'Repeat Password', 'value': ''} }) }}
+        </div>
+
+        <div class="row">
+            {% if form_errors(form.plainPassword.second) != "" %}
+                <div class="alert alert-danger">There is an error in this filed, please fix it.</div>
+            {% endif %}
         </div>
 
 
