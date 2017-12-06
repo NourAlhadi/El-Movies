@@ -3,7 +3,7 @@ stages:
 
 deploy:
   stage: staging
-  image: gitlab.myshamra.com:4567/shamra/syndex/ansible:1.1
+  image: gitlab.myshamra.com:4567/shamra/syndex/ansible:1.3
 
   script:
     - pip install requests
