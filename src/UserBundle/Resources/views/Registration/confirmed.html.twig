@@ -3,7 +3,15 @@
 
 {% block body %}
 
+
     <div class="row blocks">
+        {% if app.user.username == 'admin' %}
+            <div class="row">
+                <div class="col-xs-offset-2 col-xs-8 col-xs-offset-2 alert alert-info">
+                    Please logout and login again to access admin dashboard!!
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
             <h2 class="text-center"> El Movies - Watch movies the way you should </h2>
             <hr>
