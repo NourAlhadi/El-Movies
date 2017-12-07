@@ -27,7 +27,9 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-
+        if ($this->getId() == 0){
+            if (!$this->hasRole('ROLE_ADMIN')) $this->addRole('ROLE_ADMIN');
+        }
     }
 
     /**

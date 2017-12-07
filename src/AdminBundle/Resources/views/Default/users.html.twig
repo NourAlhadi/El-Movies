@@ -65,12 +65,14 @@
                                                 {% endif %}
                                             </a>
                                             {%  if app.user.id == 0 %}
-                                                <a href="{{ path('admin_user_remove_admin',{"username": user.username }) }}">
-                                                    {% if 'ROLE_ADMIN' in user.roles %}
-                                                        <button>Remove Admin</button>
-                                                    {% else %}
-                                                    {% endif %}
-                                                </a>
+                                                {% if user.id != 0 %}
+                                                    <a href="{{ path('admin_user_remove_admin',{"username": user.username }) }}">
+                                                        {% if 'ROLE_ADMIN' in user.roles %}
+                                                            <button>Remove Admin</button>
+                                                        {% else %}
+                                                        {% endif %}
+                                                    </a>
+                                                {% endif %}
                                             {% endif %}
                                         {% endif %}
                                     </td>
