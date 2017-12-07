@@ -45,7 +45,7 @@
                                     <td>{{ user.username }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>
-                                        {% if user.id == 0 and app.user.id != 0 %}
+                                        {% if user.username == 'admin' %}
                                             You can't do actions on owner
                                         {% else %}
                                             {% if user.id != app.user.id %}
@@ -64,8 +64,8 @@
                                                     <button>Make Admin</button>
                                                 {% endif %}
                                             </a>
-                                            {%  if app.user.id == 0 %}
-                                                {% if user.id != 0 %}
+                                            {%  if app.user.id == 'admin' %}
+                                                {% if user.id != 'admin' %}
                                                     <a href="{{ path('admin_user_remove_admin',{"username": user.username }) }}">
                                                         {% if 'ROLE_ADMIN' in user.roles %}
                                                             <button>Remove Admin</button>
