@@ -113,5 +113,15 @@ class Comment
     {
         $this->actionDate = new \DateTime('now');
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getActionDate()
+    {
+        return $this->actionDate;
+    }
+
+
 }
 

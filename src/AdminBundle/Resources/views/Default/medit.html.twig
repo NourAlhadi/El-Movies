@@ -1,0 +1,111 @@
+{% extends '@Admin/base.html.twig' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Movies
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{{ path('admin') }}">Dashboard</a>
+                    </li>
+                    <li>
+                        <i class="glyphicon glyphicon-film"></i> <a href="{{ path('admin_movies') }}"> Movies </a>
+                    </li>
+                    <li class="active">
+                       Movie "{{ movie.title }}"  Edit
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row panel panel-default">
+            <div class="panel-heading">
+                <h3>Editing Movie "{{ movie.title }}"</h3>
+                <h4>Please leave the fields you don't want to edit empty!!</h4>
+            </div>
+            <div class="panel-body listing">
+                <div class="col-sm-12">
+                    {{ form_start(form) }}
+
+                    <div class="row">
+                        {{ form_label(form.title, 'New Title', {'label_attr': {'class': 'col-sm-3'}}) }}
+                        {{ form_widget(form.title , {'attr': {'class': 'col-sm-8', 'placeholder': 'New Title', 'value': ''} }) }}
+                    </div>
+
+                    <div class="row">
+                        {{ form_label(form.year, 'New year', {'label_attr': {'class': 'col-sm-3'}}) }}
+                        {{ form_widget(form.year , {'attr': {'class': 'col-sm-8', 'placeholder': 'New Year', 'value': ''} }) }}
+                    </div>
+
+                    <div class="row">
+                        {{ form_label(form.categories, 'Select Categories', {'label_attr': {'class': 'col-sm-3'}}) }}
+                        {{ form_widget(form.categories , {'attr': {'class': 'col-sm-8', 'value': ''} }) }}
+                    </div>
+
+                    <div class="row">
+                        {{ form_label(form.actors, 'Select Actors', {'label_attr': {'class': 'col-sm-3'}}) }}
+                        {{ form_widget(form.actors , {'attr': {'class': 'col-sm-8', 'value': ''} }) }}
+                    </div>
+
+                    <div class="row">
+                        {{ form_label(form.description, 'New Description', {'label_attr': {'class': 'col-sm-3'}}) }}
+                        {{ form_widget(form.description , {'attr': {'class': 'col-sm-8', 'placeholder': 'New Description', 'value': ''} }) }}
+                    </div>
+
+                    <div class="row">
+                        {{ form_widget(form.edit , {'attr': {'class': 'col-sm-2'} }) }}
+                        {{ form_widget(form.remove , {'attr': {'class': 'col-sm-2'} }) }}
+                    </div>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+
+
+
+{% endblock %}
+
+
+{% block stylesheets %}
+
+    <style>
+        label{
+            margin-top: 5px;
+        }
+
+        form > .row{
+            margin: 10px;
+        }
+        input[type='submit']{
+            margin-left: 20px;
+        }
+
+        hr{
+            border:1px solid rgba(0,0,0,0.8);
+        }
+    </style>
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        $("#navIndex").removeClass("active");
+        $("#navMovies").removeClass("active").addClass("active");
+        $("#navCategories").removeClass("active");
+        $("#navActors").removeClass("active");
+        $("#navUsers").removeClass("active");
+    </script>
+{% endblock %}

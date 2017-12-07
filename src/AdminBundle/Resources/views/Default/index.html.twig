@@ -29,7 +29,7 @@
                                     <i class="fa fa-film fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ movies }}</div>
+                                    <div class="huge">{{ movies|length }}</div>
                                     <div>Movies&nbsp;</div>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                                     <i class="fa fa-th-list fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ categories }}</div>
+                                    <div class="huge">{{ categories|length }}</div>
                                     <div>Categories</div>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
                                     <i class="fa fa-star fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">{{ actors }}</div>
+                                    <div class="huge">{{ actors|length }}</div>
                                     <div>Actors</div>
                                 </div>
                             </div>
@@ -120,12 +120,16 @@
                 <div class="col-lg-12 panel-heading">
                     <ol class="breadcrumb">
                         <li class="active">
-                            <i class="fa fa-dashboard"></i> Statistics
+                            <i class="fa fa-dashboard"></i> Notifications
                         </li>
                     </ol>
                 </div>
-                <div class="col-sm-12 panel-body">
-                    <canvas id="myChart" width="80%" height="40px"></canvas>
+                <div class="col-sm-12 panel-body notifications">
+                    <div class="row">
+                          <div class="col-sm-offset-1 col-sm-10 alert alert-info">
+                              - Here is My Notification
+                          </div>
+                    </div>
                 </div>
             </div>
             <!-- /.row -->
@@ -135,34 +139,19 @@
 
 {% endblock %}
 
-{% block javascripts %}
-    <script>
-        var ctx = document.getElementById("myChart").getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ["Movies", "Categories", "Actors", "Users"],
-                datasets: [{
-                    label: 'Number of registered:',
 
-                    data: [{{ movies }}, {{ categories }}, {{ actors }}, {{ users|length }}], // This Must Be Edited From Twig
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(79, 206, 68, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(255, 99, 132, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(79, 206, 68, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(255,99,132,1)'
-                    ],
-                    borderWidth: 1
-                }]
-            }
-        });
-    </script>
+{% block stylesheets %}
+    <style>
+        .notifications {
+            min-height: 200px;
+            max-height: 500px;
+            overflow: scroll;
+            margin:0 auto;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
 
     <script>
         $("#navIndex").removeClass("active").addClass("active");

@@ -31,17 +31,6 @@ class Actor
     private $name;
 
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="action_date",type="datetime", nullable=true , options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $actionDate;
-
-    public function __construct(){
-        $this->actionDate = new \DateTime('now');
-    }
-
 
     /**
      * Get id
@@ -75,15 +64,6 @@ class Actor
     public function getName()
     {
         return $this->name;
-    }
-
-
-    /**
-     * @param \DateTime $actionDate
-     */
-    public function setActionDate($actionDate)
-    {
-        $this->actionDate = new \DateTime('now');
     }
 
 

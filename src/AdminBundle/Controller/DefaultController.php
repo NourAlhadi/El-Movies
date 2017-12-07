@@ -4,8 +4,14 @@ namespace AdminBundle\Controller;
 
 use AppBundle\Entity\Actor;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Movie;
 use AppBundle\Form\ActorType;
 use AppBundle\Form\CategoryType;
+use AppBundle\Form\MovieType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,20 +30,18 @@ class DefaultController extends Controller
     public function adminAction(Request $request){
         $em = $this -> getDoctrine() -> getManager();
 
-        $aqb = $em->getRepository("AppBundle:Actor")->createQueryBuilder('actor');
-        $acnt = $aqb->select('count(actor.id)')->getQuery()->getSingleScalarResult();
+        $actors = $em->getRepository("AppBundle:Actor")->findBy([],['name'=>'ASC']);
 
-        $cqb = $em->getRepository("AppBundle:Category")->createQueryBuilder('category');
-        $ccnt = $cqb->select('count(category.id)')->getQuery()->getSingleScalarResult();
+        $categories = $em->getRepository("AppBundle:Category")->findBy([],['name'=>'ASC']);
 
-        $mqb = $em->getRepository("AppBundle:Movie")->createQueryBuilder('movie');
-        $mcnt = $mqb->select('count(movie.id)')->getQuery()->getSingleScalarResult();
+        $movies = $em->getRepository("AppBundle:Movie")->findBy([],['title'=>'ASC']);
 
-        $users = $em->getRepository('UserBundle:User')->findAll();
+        $users = $em->getRepository('UserBundle:User')->findBy([],['name'=>'ASC']);
+
         return $this->render('@Admin/Default/index.html.twig',[
-            "actors"=>$acnt,
-            "categories"=>$ccnt,
-            "movies"=>$mcnt,
+            "actors"=>$actors,
+            "categories"=>$categories,
+            "movies"=>$movies,
             "users"=>$users
         ]);
     }
@@ -47,7 +51,12 @@ class DefaultController extends Controller
      * @Route("/admin/movies",name="admin_movies")
      */
     public function adminMoviesAction(Request $request){
-        return $this->render('@Admin/Default/movies.html.twig');
+
+        // Getting Entity Manager / All Movies on System (Ordered)
+        $em = $this->getDoctrine()->getManager();
+        $movies = $em->getRepository('AppBundle:Movie')->findBy([],['title'=>'ASC']);
+
+        return $this->render('@Admin/Default/movies.html.twig',["movies"=>$movies]);
     }
 
     /**
@@ -261,4 +270,112 @@ class DefaultController extends Controller
         return $this->redirectToRoute('admin_users');
     }
 
+
+    /**
+     * @Route("/admin/movie/edit/{id}",name="admin_movie_edit")
+     */
+    public function adminMovieEditAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        $movie = $em->getRepository('AppBundle:Movie')->find($id);
+
+        $new_movie = new Movie();
+
+        $eform = $this->createFormBuilder($new_movie)
+                ->add('title',TextType::class,array(
+                    'required' => false
+                ))
+                ->add('year',IntegerType::class,array(
+                    'required' => false
+                ))
+                ->add('categories', EntityType::class, [
+                    'class'     => 'AppBundle\Entity\Category',
+                    'expanded'  => false,
+                    'multiple'  => true,
+                    'required' => false,
+                ])
+                ->add('actors', EntityType::class, [
+                    'class'     => 'AppBundle\Entity\Actor',
+                    'expanded'  => false,
+                    'multiple'  => true,
+                    'required'  => false,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.name', 'ASC');
+                    },
+                ])
+                ->add('description',TextareaType::class,array(
+                    'required' => false
+                ))
+                ->add('edit',SubmitType::class)
+                ->add('remove',SubmitType::class)
+                ->getForm();
+
+        $eform->handleRequest($request);
+
+        if ($eform->isSubmitted() && $eform->isValid()) {
+            if ($eform->get('remove')->isClicked()){
+                $em->remove($movie);
+                $em->flush();
+                return $this->redirectToRoute('admin_movies');
+            }
+
+            $new_movie = $eform->getData();
+            //return $this->render('default/dumpper.html.twig',["dmp"=>$new_movie]);
+            if ($new_movie->getTitle() != null) {
+                $movie->setTitle($new_movie->getTitle());
+            }
+            if ($new_movie->getYear() != null) {
+                $movie->setYear($new_movie->getYear());
+            }
+            if ($new_movie->getDescription() != null) {
+                $movie->setDescription($new_movie->getDescription());
+            }
+            if (!$new_movie->getActors()->isEmpty()) {
+                $movie->setActors($new_movie->getActors());
+            }
+            if (!$new_movie->getCategories()->isEmpty()) {
+                $movie->setCategories($new_movie->getCategories());
+            }
+            $em->flush();
+
+            return $this->redirectToRoute('admin_movies');
+        }
+
+        return $this->render('@Admin/Default/medit.html.twig',[
+            "movie"=>$movie,
+            "form"=>$eform->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/movie/add/",name="admin_movie_add")
+     */
+    public function addMovieAction(Request $request){
+
+        // Getting Entity Manager / All Categories on System (Ordered) / All Movies
+        $em = $this->getDoctrine()->getManager();
+
+        // Setting Up the Add Movie Form
+        $movie = new Movie();
+        $form = $this->createForm(MovieType::class,$movie);
+        $form->handleRequest($request);
+
+
+        // Handling Movie Add
+        if ($form->isSubmitted() && $form->isValid()){
+            $movie = $form->getData();
+            $fnd = $em->getRepository('AppBundle:Movie')
+                ->findOneBy(array('title'=>$movie->getTitle()));
+            if (is_null($fnd)) {
+                $em->persist($movie);
+                $em->flush();
+                $movie = new Movie();
+            }
+            return $this->redirectToRoute('admin_movies');
+        }
+
+        return $this->render('@Admin/Default/madd.html.twig',[
+            "form"=>$form->createView()
+        ]);
+    }
 }

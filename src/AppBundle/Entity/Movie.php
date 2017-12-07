@@ -87,17 +87,11 @@ class Movie
      */
     private $categories;
 
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="action_date", type="datetime", nullable=true,options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $actionDate;
-
-
-    public function __construct(){
-        $this->actionDate = new \DateTime('now');
+    public function __construct()
+    {
+        if (is_null($this->viewCount )) $this->viewCount = 0;
+        if (is_null($this->totalCounts )) $this->totalCounts = 0;
+        if (is_null($this->starsCount )) $this->starsCount = 0;
     }
 
     /**
@@ -303,16 +297,6 @@ class Movie
     {
         $this->categories = $categories;
     }
-
-    /**
-     * @param \DateTime $actionDate
-     */
-    public function setActionDate($actionDate)
-    {
-        $this->actionDate = new \DateTime('now');
-    }
-
-
 
 
 }

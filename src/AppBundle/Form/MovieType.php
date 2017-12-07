@@ -22,6 +22,7 @@ class MovieType extends AbstractType
                 'class'     => 'AppBundle\Entity\Category',
                 'expanded'  => false,
                 'multiple'  => true,
+                'required'=> false
                 ])
                 ->add('actors', EntityType::class, [
                     'class'     => 'AppBundle\Entity\Actor',
@@ -31,6 +32,7 @@ class MovieType extends AbstractType
                         return $er->createQueryBuilder('u')
                             ->orderBy('u.name', 'ASC');
                     },
+                    'required' => false
                 ])
                 ->add('description')
                 ->add('submit',SubmitType::class);
