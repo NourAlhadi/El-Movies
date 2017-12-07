@@ -91,15 +91,19 @@ class Movie
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="add_date", type="datetime", nullable=true, options={"default":"CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="action_date", type="datetime", nullable=true,options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $addDate;
+    private $actionDate;
 
+
+    public function __construct(){
+        $this->actionDate = new \DateTime('now');
+    }
 
     /**
      * Get id
      *
-     * @return intmodify
+     * @return int
      */
     public function getId()
     {
@@ -301,23 +305,15 @@ class Movie
     }
 
     /**
-     * @return \DateTime
+     * @param \DateTime $actionDate
      */
-    public function getAddMonth()
+    public function setActionDate($actionDate)
     {
-        return $this->addDate;
+        $this->actionDate = new \DateTime('now');
     }
 
-    /**
-     * @param \DateTime $addDate
-     */
-    public function setAddMonth($addDate)
-    {
-        if ($this->addDate == null)
-            $this->addDate = new \DateTime('now');
-        else
-            $this->addDate = $addDate;
-    }
+
+
 
 }
 

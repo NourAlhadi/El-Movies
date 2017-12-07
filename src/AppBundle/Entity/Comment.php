@@ -38,9 +38,14 @@ class Comment
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="action_date", type="datetime", nullable=true,options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $date;
+    private $actionDate;
+
+
+    public function __construct(){
+        $this->actionDate = new \DateTime('now');
+    }
 
 
     /**
@@ -102,27 +107,11 @@ class Comment
     }
 
     /**
-     * Set date
-     *
-     * @param \DateTime $date
-     *
-     * @return Comment
+     * @param \DateTime $actionDate
      */
-    public function setDate($date)
+    public function setActionDate($actionDate)
     {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
+        $this->actionDate = new \DateTime('now');
     }
 }
 
