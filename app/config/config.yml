@@ -75,7 +75,7 @@ fos_user:
     firewall_name: main
     user_class: UserBundle\Entity\User
     from_email:
-        address: '%mailer_user%'
+        address: info@elmovies.com
         sender_name: ElMovies
     registration:
         form:
