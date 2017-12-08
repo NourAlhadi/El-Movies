@@ -113,7 +113,7 @@
 
         <!-- Finally The Footer -->
         <footer class="container-fluid bg-foot text-center">
-            <p>El Movies your best choice to watch movies everytime. <br>
+            <p class="footer-text">El Movies your best choice to watch movies everytime. <br>
                 all right reserved &copy; El Movies 2017
             </p>
         </footer>
@@ -131,6 +131,10 @@
                 var ntop = h - 80;
                 if (pos.top < h) $("footer").css({top:ntop});
             });
+
+        </script>
+        <script>
+            $(".bg-foot").css({ top: $(document).height() });
         </script>
     </body>
 </html>

@@ -36,4 +36,3 @@ services:
     redirect.after.login:
         class: AdminBundle\Redirection\AfterLoginRedirection
         arguments: ['@router']
-

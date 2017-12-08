@@ -61,6 +61,7 @@
                                     <td class="col-xs-1">{{ movie.comments|length }}</td>
                                     <td class="col-xs-2">
                                         <a href="{{ path('admin_movie_edit',{'id':movie.id}) }}"><button>Edit</button></a>
+                                        <a href="{{ path('admin_movie_poster',{'id':movie.id}) }}"><button>Posters</button></a>
                                     </td>
                                 </tr>
                             {% endfor %}

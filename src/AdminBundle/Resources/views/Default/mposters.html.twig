@@ -18,7 +18,7 @@
                         <i class="glyphicon glyphicon-film"></i> <a href="{{ path('admin_movies') }}"> Movies </a>
                     </li>
                     <li class="active">
-                        Add Movie
+                        Add Movie Poster
                     </li>
                 </ol>
             </div>
@@ -27,36 +27,27 @@
 
         <div class="row panel panel-default">
             <div class="panel-heading">
-                <h3>Adding New Movie</h3>
+                <h3>Adding / Changing Movie's Posters</h3>
             </div>
             <div class="panel-body listing">
                 <div class="col-sm-12">
                     {{ form_start(form) }}
 
                     <div class="row">
-                        {{ form_label(form.title, 'Title', {'label_attr': {'class': 'col-sm-3'}}) }}
-                        {{ form_widget(form.title , {'attr': {'class': 'col-sm-8', 'placeholder': 'Title', 'value': ''} }) }}
+                        {{ form_label(form.index, 'Index Poster', {'label_attr': {'class': 'col-sm-3'}}) }}
+                        {{ form_widget(form.index , {'attr': {'class': 'col-sm-8', 'placeholder': 'Index Poster', 'value': ''} }) }}
                     </div>
+                    {% if movie.indexPoster != null %}
+                        <div class="row alert alert-info">Index Poster is Already Uploaded!!</div>
+                    {% endif %}
 
                     <div class="row">
-                        {{ form_label(form.year, 'Year', {'label_attr': {'class': 'col-sm-3'}}) }}
-                        {{ form_widget(form.year , {'attr': {'class': 'col-sm-8', 'placeholder': 'Year', 'value': ''} }) }}
+                        {{ form_label(form.main, 'Main Poster', {'label_attr': {'class': 'col-sm-3'}}) }}
+                        {{ form_widget(form.main , {'attr': {'class': 'col-sm-8', 'placeholder': 'Main Poster', 'value': ''} }) }}
                     </div>
-
-                    <div class="row">
-                        {{ form_label(form.categories, 'Select Categories', {'label_attr': {'class': 'col-sm-3'}}) }}
-                        {{ form_widget(form.categories , {'attr': {'class': 'col-sm-8', 'value': ''} }) }}
-                    </div>
-
-                    <div class="row">
-                        {{ form_label(form.actors, 'Select Actors', {'label_attr': {'class': 'col-sm-3'}}) }}
-                        {{ form_widget(form.actors , {'attr': {'class': 'col-sm-8', 'value': ''} }) }}
-                    </div>
-
-                    <div class="row">
-                        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'col-sm-3'}}) }}
-                        {{ form_widget(form.description , {'attr': {'class': 'col-sm-8', 'placeholder': 'Description', 'value': ''} }) }}
-                    </div>
+                    {% if movie.mainPoster != null %}
+                        <div class="row alert alert-info">Main Poster is Already Uploaded!!</div>
+                    {% endif %}
 
                     <div class="row">
                         {{ form_widget(form.submit , {'attr': {'class': 'col-sm-2'} }) }}

@@ -11,29 +11,31 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
 
-                <div class="item active">
-                    <img src="{{ asset('assets/res/atomic.jpg') }}" alt="Atomic Blonde">
-                    <div class="carousel-caption">
-                        <h2>Atomic Blonde</h2>
-                        <p>With total rate of: 96.12%</p>
-                    </div>
-                </div>
-
-                <div class="item">
-                    <img src="{{ asset('assets/res/it.jpg') }}" alt="IT">
-                    <div class="carousel-caption">
-                        <h2>IT</h2>
-                        <p>With total rate of: 90.61%</p>
-                    </div>
-                </div>
-
-                <div class="item">
-                    <img src="{{ asset('assets/res/johnwick.jpg') }}" alt="John Wick 2">
-                    <div class="carousel-caption">
-                        <h2>John Wick 2</h2>
-                        <p>With total rate of: 99.99%</p>
-                    </div>
-                </div>
+                {% set active = 0 %}
+                {% for movie in top_rated %}
+                    {% if active == 0 %}
+                        <div class="item active">
+                    {% else %}
+                        <div class="item">
+                    {% endif %}
+                            {% set active = 1 %}
+                            {% if movie.indexPoster != null %}
+                                <img src="{{ asset('assets/res/'~movie.indexPoster) }}" alt="{{ movie.title }}">
+                            {% else %}
+                                <img src="{{ asset('assets/res/indexPoster.png') }}" alt="{{ movie.title }}">
+                            {% endif %}
+                            <div class="carousel-caption">
+                                <a href="{{ path('movie',{'id':movie.id}) }}">
+                                    <h2>{{ movie.title  }}</h2>
+                                    {% set rate = 0 %}
+                                    {% if movie.totalCounts != 0 %}
+                                        {% set rate = movie.starsCount / movie.totalCounts %}
+                                    {% endif %}
+                                    <p>With total rate of: {{ rate }}</p>
+                                </a>
+                            </div>
+                        </div>
+                {% endfor %}
 
             </div>
 
@@ -57,32 +59,28 @@
         <div id="newMovies" class="carousel slide" data-ride="carousel">
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-
+                {% set active = 0 %}
+                {% for movie in new_movies %}
+                {% if active == 0 %}
                 <div class="item active">
-                    <img src="{{ asset('assets/res/johnwick.jpg') }}" alt="John Wick 2">
-                    <div class="carousel-caption">
-                        <h2>John Wick 2</h2>
-                        <p>Release Year: 2017</p>
+                    {% else %}
+                    <div class="item">
+                        {% endif %}
+                        {% set active = 1 %}
+                        {% if movie.indexPoster != null %}
+                            <img src="{{ asset('assets/res/'~movie.indexPoster) }}" alt="{{ movie.title }}">
+                        {% else %}
+                            <img src="{{ asset('assets/res/indexPoster.png') }}" alt="{{ movie.title }}">
+                        {% endif %}
+                        <div class="carousel-caption">
+                            <a href="{{ path('movie',{'id':movie.id}) }}">
+                                <h2>{{ movie.title  }}</h2>
+                                <p>Year: {{ movie.year }}</p>
+                            </a>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-
-                <div class="item">
-                    <img src="{{ asset('assets/res/atomic.jpg') }}" alt="Atomic Blonde">
-                    <div class="carousel-caption">
-                        <h2>Atomic Blonde</h2>
-                        <p>Release Year: 2017</p>
-                    </div>
-                </div>
-
-                <div class="item">
-                    <img src="{{ asset('assets/res/it.jpg') }}" alt="IT">
-                    <div class="carousel-caption">
-                        <h2>IT</h2>
-                        <p>Release Year: 2017</p>
-                    </div>
-                </div>
-
-            </div>
 
             <!-- Left and right controls -->
             <a class="left carousel-control" href="#newMovies" data-slide="prev">
@@ -99,7 +97,6 @@
     <!-- End of new movies -->
 
     <!-- End of Main Section -->
-
 
 {% endblock %}
 
@@ -123,6 +120,12 @@
         padding: 0;
     }
 
+    .carousel-caption > a{
+        color: inherit;
+    }
+    .carousel-caption > a:hover{
+        text-decoration: none;
+    }
     .item img{
         display: block;
         position: absolute;

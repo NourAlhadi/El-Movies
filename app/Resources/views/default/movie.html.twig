@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+
+{% block fastaccess %}
+{% endblock %}
+
+{% block body %}
+
+<div class="container block col-xs-11">
+    <div class="row">
+        <div class="col-xs-4">
+            {% if movie.mainPoster == null %}
+                <img src="{{ asset('assets/res/mainPoster.png') }}" alt="{{ movie.title }}">
+            {% else %}
+                <img src="{{ asset('assets/res/'~movie.mainPoster) }}" alt="{{ movie.title }}">
+            {% endif %}
+        </div>
+        <div class="col-xs-8">
+            <div class="row">
+                <div class="col-xs-2">Title: </div> <div class="col-xs-9">{{ movie.title }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">Year: </div> <div class="col-xs-9"> {{ movie.year }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">Views: </div> <div class="col-xs-9">{{ movie.viewCount }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">Rate: </div> <div class="col-xs-9">
+                {% if movie.totalCounts == 0%} 0
+                {% else %} {% set rate = movie.starsCount / movie.totalCounts %} {{ rate }}
+                {% endif %}
+                Stars
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">Categories: </div> <div class="col-xs-9">
+                {% for cat in movie.categories %}
+                    <a href=""><div class="cat">{{ cat.name }}</div></a>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col-xs-2">Actors: </div> <div class="col-xs-9">
+                {% for act in movie.actors %}
+                    <a href=""><div class="cat">{{ act.name }}</div></a>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col-xs-2">Description:</div>
+                <div class="col-xs-9">
+                    {{ movie.description|nl2br }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container block col-xs-11">
+    <div class="row"> <div class="col-xs-11"><h3>Comments On Movie:</h3></div></div>
+    {% for comment in movie.comments %}
+        <div class="col-xs-offset-2 col-xs-9 comment">
+            <div class="col-xs-3"><strong>{{ comment.writer }}:</strong></div>
+            <div class="col-xs-9">
+                {{ comment.body|nl2br }}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if is_granted('ROLE_USER') %}
+        <div class="col-xs-offset-2 col-xs-9 comment">
+            <h4><strong>Add A Comment!!</strong></h4>
+            {{ form_start(form) }}
+                <div class="row">
+                    {{ form_label(form.comment, 'Comment', {'label_attr': {'class': 'col-sm-2'}}) }}
+                    {{ form_widget(form.comment , {'attr': {'class': 'col-sm-8', 'placeholder': 'Add A Comment', 'value': ''} }) }}
+                </div>
+                <div class="row">
+                    {{ form_widget(form.submit , {'attr': {'class': 'col-sm-2'} }) }}
+                </div>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+{% block stylesheets %}
+    <style>
+        .col-xs-4 > img{
+            max-height: 100%;
+            max-width: 100%;
+            margin-right: 10px;
+            border-radius: 15px;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            box-shadow: 5px 5px 5px 5px #AAA;
+
+        }
+        .col-xs-8 > .row{
+            margin: 10px 0 0 20px;
+            padding-right: 20px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .col-xs-8 > .row > a{
+            color:inherit;
+        }
+        .col-xs-8 > .row > a:hover{
+            text-decoration: none;
+        }
+
+        .cat{
+            display: inline-block;
+            width: auto;
+            border-radius: 15px;
+            box-shadow: 5px 5px 5px 5px #AAA;
+            background-color: rgba(250,250,250,0.8);
+            margin: 20px 10px;
+            text-align: center;
+            padding: 10px;
+            color: #2f2f2f;
+            font-weight: bold;
+        }
+
+        .block{
+            background-color: #e7e7e7;
+            border: 2px solid rgba(0,0,0,0.5);
+            box-shadow: 2px 2px 2px 2px grey;
+            border-radius: 15px;
+            margin-bottom: 100px;
+            padding: 20px;
+        }
+        html { height: 100%; }
+        body { min-height: 100%; }
+        .col-xs-2{
+            margin-right: 20px;
+        }
+        .col-xs-9{
+            font-weight: normal;
+        }
+
+        .comment{
+            border: 2px solid rgba(0,0,0,0.5);
+            box-shadow: 2px 2px 2px 2px grey;
+            border-radius: 15px;
+            margin: 20px;
+            padding:20px;
+        }
+
+        .comment > .col-xs-9{
+            width: auto;
+        }
+        label{
+            margin-top: 5px;
+        }
+
+        form > .row{
+            margin: 10px;
+        }
+        input[type='submit']{
+            margin-left: 20px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}

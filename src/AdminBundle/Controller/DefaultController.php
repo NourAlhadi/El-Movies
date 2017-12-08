@@ -8,8 +8,8 @@ use AppBundle\Entity\Movie;
 use AppBundle\Form\ActorType;
 use AppBundle\Form\CategoryType;
 use AppBundle\Form\MovieType;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class DefaultController extends Controller
 {
@@ -180,7 +180,7 @@ class DefaultController extends Controller
                 $actor = new Actor();
                 $form = $this->createForm(ActorType::class, $actor);
             }
-            return $this->redirectToRoute('admin');
+            return $this->redirectToRoute('admin_actors');
         }
 
         // Handling Actors Edit / Remove
@@ -204,7 +204,7 @@ class DefaultController extends Controller
                 $em->remove($eact);
                 $em->flush();
             }
-            return $this->redirectToRoute('admin');
+            return $this->redirectToRoute('admin_actors');
         }
 
         return $this->render('@Admin/Default/actors.html.twig',[
@@ -376,6 +376,72 @@ class DefaultController extends Controller
 
         return $this->render('@Admin/Default/madd.html.twig',[
             "form"=>$form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/movie/poster/{id}",name="admin_movie_poster")
+     */
+    public function posterMovieAction(Request $request,$id){
+
+        // Getting Entity Manager
+        $em = $this->getDoctrine()->getManager();
+
+        // Setting Up the Add Movie Form
+        $form = $this->createFormBuilder(null)
+                ->add('main',FileType::class,[
+                    "required" => false,
+                ])
+                ->add('index',FileType::class,[
+                    "required" => false,
+                ])
+                ->add('submit',SubmitType::class)
+                ->getForm();
+
+        $form->handleRequest($request);
+
+
+        // Handling Poster Add
+        if ($form->isSubmitted() && $form->isValid()) {
+            $movie = $em->getRepository('AppBundle:Movie')->find($id);
+
+            $data = $form->getData();
+            /** @var UploadedFile $main */
+            $main = $data['main'];
+            /** @var UploadedFile $index */
+            $index = $data['index'];
+
+            if ($main != null){
+                $mainExt = $main->getClientOriginalExtension();
+                $mainName = md5(uniqid()) . '.' . $mainExt;
+                $main->move(
+                    $this->getParameter('posters_directory'),
+                    $mainName
+                );
+                $movie->setMainPoster($mainName);
+            }
+
+            if ($index != null) {
+                $indexExt = $index->getClientOriginalExtension();
+                $indexName = md5(uniqid()) . '.' . $indexExt;
+                $index->move(
+                    $this->getParameter('posters_directory'),
+                    $indexName
+                );
+                $movie->setIndexPoster($indexName);
+            }
+
+            $em->persist($movie);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_movies');
+
+        }
+
+        $movie = $em->getRepository('AppBundle:Movie')->find($id);
+        return $this->render('@Admin/Default/mposters.html.twig',[
+            "form"=>$form->createView(),
+            "movie"=>$movie,
         ]);
     }
 }

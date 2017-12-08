@@ -87,6 +87,20 @@ class Movie
      */
     private $categories;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="main_poster", type="string",nullable=true)
+     */
+    private $mainPoster;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="index_poster", type="string",nullable=true)
+     */
+    private $indexPoster;
+
     public function __construct()
     {
         if (is_null($this->viewCount )) $this->viewCount = 0;
@@ -298,6 +312,37 @@ class Movie
         $this->categories = $categories;
     }
 
+    /**
+     * @return string
+     */
+    public function getMainPoster()
+    {
+        return $this->mainPoster;
+    }
+
+    /**
+     * @param string $mainPoster
+     */
+    public function setMainPoster($mainPoster)
+    {
+        $this->mainPoster = $mainPoster;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIndexPoster()
+    {
+        return $this->indexPoster;
+    }
+
+    /**
+     * @param string $indexPoster
+     */
+    public function setIndexPoster($indexPoster)
+    {
+        $this->indexPoster = $indexPoster;
+    }
 
 }
 
