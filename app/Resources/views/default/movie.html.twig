@@ -25,12 +25,12 @@
                 <div class="col-xs-2">Views: </div> <div class="col-xs-9">{{ movie.viewCount }}</div>
             </div>
             <div class="row">
-                <div class="col-xs-2">Rate: </div> <div class="col-xs-9">
+                <span class="col-xs-2">Rate: </span> <span class="col-xs-9">
                 {% if movie.totalCounts == 0%} 0
                 {% else %} {% set rate = movie.starsCount / movie.totalCounts %} {{ rate }}
                 {% endif %}
                 Stars
-                </div>
+                </span>
             </div>
             <div class="row">
                 <div class="col-xs-2">Categories: </div> <div class="col-xs-9">
@@ -56,6 +56,16 @@
             </div>
         </div>
     </div>
+    <div class="row">
+            <span class="rate">
+                Rate It!!
+                <i id="st1" class="fa fa-star"></i>
+                <i id="st2" class="fa fa-star"></i>
+                <i id="st3" class="fa fa-star"></i>
+                <i id="st4" class="fa fa-star"></i>
+                <i id="st5" class="fa fa-star"></i>
+            </span>
+    </div>
 </div>
 
 
@@ -63,7 +73,7 @@
     <div class="row"> <div class="col-xs-11"><h3>Comments On Movie:</h3></div></div>
     {% for comment in movie.comments %}
         <div class="col-xs-offset-2 col-xs-9 comment">
-            <div class="col-xs-3"><strong>{{ comment.writer }}:</strong></div>
+            <div class="col-xs-2"><strong>{{ comment.writer }}:</strong></div>
             <div class="col-xs-9">
                 {{ comment.body|nl2br }}
             </div>
@@ -119,7 +129,7 @@
             border-radius: 15px;
             box-shadow: 5px 5px 5px 5px #AAA;
             background-color: rgba(250,250,250,0.8);
-            margin: 20px 10px;
+            margin: 0 10px;
             text-align: center;
             padding: 10px;
             color: #2f2f2f;
@@ -151,9 +161,6 @@
             padding:20px;
         }
 
-        .comment > .col-xs-9{
-            width: auto;
-        }
         label{
             margin-top: 5px;
         }
@@ -164,10 +171,110 @@
         input[type='submit']{
             margin-left: 20px;
         }
+
+        .light{
+            color: orange;
+        }
+        .rate > .fa{
+            margin: 0!important;
+            width: 20px;
+        }
+        .rate{
+            font-weight: bold;
+            margin-left: 25px;
+        }
     </style>
 {% endblock %}
 
 
 {% block javascripts %}
+
+    <script>
+
+        function doAjax(star){
+
+            var $arr = {
+                "id":{{ movie.id }} ,
+                "stars":star
+            };
+            $.ajax({
+                type: 'POST',
+                url: '{{ (path("add_rate")) }}',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify($arr),
+                dataType: 'json',
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            });
+        }
+
+        $("#st1").mouseenter(function(){
+            $("#st1").addClass("light");
+        }).mouseleave(function(){
+            $("#st1").removeClass("light");
+        }).click(function(){
+            $(".rate").hide(100);
+        });
+
+
+        $("#st2").mouseenter(function(){
+            $("#st1").addClass("light");
+            $("#st2").addClass("light");
+        }).mouseleave(function(){
+            $("#st1").removeClass("light");
+            $("#st2").removeClass("light");
+        }).click(function(){
+            $(".rate").hide(100);
+            doAjax(2);
+        });
+
+        $("#st3").mouseenter(function(){
+            $("#st1").addClass("light");
+            $("#st2").addClass("light");
+            $("#st3").addClass("light");
+        }).mouseleave(function(){
+            $("#st1").removeClass("light");
+            $("#st2").removeClass("light");
+            $("#st3").removeClass("light");
+        }).click(function(){
+            $(".rate").hide(100);
+            doAjax(3);
+        });
+
+        $("#st4").mouseenter(function(){
+            $("#st1").addClass("light");
+            $("#st2").addClass("light");
+            $("#st3").addClass("light");
+            $("#st4").addClass("light");
+        }).mouseleave(function(){
+            $("#st1").removeClass("light");
+            $("#st2").removeClass("light");
+            $("#st3").removeClass("light");
+            $("#st4").removeClass("light");
+        }).click(function(){
+            $(".rate").hide(100);
+            doAjax(4);
+        });
+
+
+        $("#st5").mouseenter(function(){
+            $("#st1").addClass("light");
+            $("#st2").addClass("light");
+            $("#st3").addClass("light");
+            $("#st4").addClass("light");
+            $("#st5").addClass("light");
+        }).mouseleave(function(){
+            $("#st1").removeClass("light");
+            $("#st2").removeClass("light");
+            $("#st3").removeClass("light");
+            $("#st4").removeClass("light");
+            $("#st5").removeClass("light");
+        }).click(function(){
+            $(".rate").hide(100);
+            doAjax(5);
+        });
+    </script>
 
 {% endblock %}
