@@ -22,16 +22,6 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // Making Sure that First Registered User is admin
-        $user = $this->getUser();
-        if ($user != null && ($user->getId() == 1 || $user->getUsername() == "admin") ){
-            if (!$user->hasRole("ROLE_ADMIN")) {
-                $user->addRole('ROLE_ADMIN');
-                $this->getDoctrine()->getManager()->persist($user);
-                $this->getDoctrine()->getManager()->flush();
-                $this->get('fos_user.user_manager')->updateUser($user);
-            }
-        }
 
         // Getting Top 10 new Movies
         $newMovies = $this->getDoctrine()->getManager()
