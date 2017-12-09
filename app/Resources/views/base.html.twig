@@ -37,6 +37,13 @@
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
                         {% if is_granted('ROLE_USER') %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li>
+                                    <a href="{{ path('admin') }}">
+                                        <span class="fa fa-dashboard" style="padding:0; width:auto"></span> Dashboard
+                                    </a>
+                                </li>
+                            {% endif %}
                             <li>
                                 <a href="{{ path('fos_user_profile_show') }}">
                                     <span class="glyphicon glyphicon-user"></span> Profile
@@ -108,13 +115,10 @@
 
         <div class="container hidden-sm">
             <ul class="lefter">
-                <li> - Top Rated <span class="fa fa-star checked"></span></li>
-                <li> - New Movies<span class="fa fa-star checked"></span></li>
-                <li> - Actors<span class="fa fa-star checked"></span></li>
-                <li> - Categories<span class="fa fa-star checked"></span></li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin') }}"> - Admin Dashboard <span class="fa fa-star checked"></span></a>
-                {% endif %}
+                <a href="{{ path('top_rated') }}"><li> - Top Rated <span class="fa fa-star checked"></span></li></a>
+                <a href="{{ path('new_movies') }}"><li> - New Movies<span class="fa fa-star checked"></span></li></a>
+                <a href="{{ path('actors') }}"><li> - Actors<span class="fa fa-star checked"></span></li></a>
+                <a href="{{ path('categories') }}"><li> - Categories<span class="fa fa-star checked"></span></li></a>
             </ul>
         </div>
 

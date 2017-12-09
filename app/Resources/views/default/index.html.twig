@@ -56,44 +56,36 @@
     <!-- New Movies -->
     <div class="container blocks">
         <h2> - New Movies</h2>
-        <div id="newMovies" class="carousel slide" data-ride="carousel">
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner">
-                {% set active = 0 %}
-                {% for movie in new_movies %}
-                {% if active == 0 %}
-                <div class="item active">
-                    {% else %}
-                    <div class="item">
-                        {% endif %}
-                        {% set active = 1 %}
-                        {% if movie.indexPoster != null %}
-                            <img src="{{ asset('assets/res/'~movie.indexPoster) }}" alt="{{ movie.title }}">
-                        {% else %}
-                            <img src="{{ asset('assets/res/indexPoster.png') }}" alt="{{ movie.title }}">
-                        {% endif %}
-                        <div class="carousel-caption">
-                            <a href="{{ path('movie',{'id':movie.id}) }}">
-                                <h2>{{ movie.title  }}</h2>
-                                <p>Year: {{ movie.year }}</p>
-                            </a>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
 
-            <!-- Left and right controls -->
-            <a class="left carousel-control" href="#newMovies" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="right carousel-control" href="#newMovies" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right"></span>
-                <span class="sr-only">Next</span>
-            </a>
+        <div class="row">
+            <div class="col-xs-12">
+                {% set cnt = 0 %}
+                {% for movie in new_movies %}
+                    {% if cnt%4 == 0 %}
+                        {% if cnt != 0 %}
+                            </div>
+                        {% endif %}
+                        <div class="row">
+                    {% endif %}
+                    <a href="{{ path('movie',{id:movie.id}) }}">
+                        <div class="col-xs-2 cat">
+                            {% if movie.mainPoster == null %}
+                                <img src="{{ asset('assets/res/mainPoster.png') }}" alt="{{ movie.title }}">
+                            {% else %}
+                                <img src="{{ asset('assets/res/'~movie.mainPoster) }}" alt="{{ movie.title }}">
+                            {% endif %}
+                            <strong class="text-center">{{ movie.title }}</strong>
+                        </div>
+                    </a>
+                    {% set cnt = cnt + 1 %}
+                {% endfor %}
+                {% if cnt % 4 != 0 %}
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
-
+</div>
     <!-- End of new movies -->
 
     <!-- End of Main Section -->
@@ -160,28 +152,28 @@
             font-weight: bold;
         }
     }
+    .cat{
+        border-radius: 15px;
+        box-shadow: 5px 5px 5px 5px #AAA;
+        background-color: #DDD;
+        margin: 20px 10px;
+        text-align: center;
+        padding: 0;
+        color: #2f2f2f;
+        font-weight: bold;
+        height: 250px;
+        width: 150px;
+    }
+
+    .cat > img{
+        max-height: 100%;
+        max-width: 100%;
+        border-radius: 15px;
+        margin-bottom: 10px;
+    }
+
+    .blocks > .row{
+        margin:0 auto;
+    }
 </style>
 {% endblock %}
-
-{#
-{% block javascripts %}
-<script>
-    function modl(x){
-        var signUp = document.getElementById("snp");
-        var signIn = document.getElementById("lgn");
-        signUp.classList = null;
-        signUp.className = "";
-        signIn.classList = null;
-        signIn.className = "";
-
-        if (x == 2){
-            signIn.addClass = "active";
-            signIn.className = "active";
-        }else{
-            signUp.addClass = "active";
-            signUp.className = "active";
-        }
-    }
-</script>
-{% endblock %}
-#}

@@ -26,7 +26,7 @@ class DefaultController extends Controller
         // Getting Top 10 new Movies
         $newMovies = $this->getDoctrine()->getManager()
                         ->getRepository('AppBundle:Movie')
-                        ->findBy([],['year'=>'DESC'],10);
+                        ->findBy([],['year'=>'DESC'],12);
 
         // Getting Top 10 rated Movies
         $qb = $this->getDoctrine()->getRepository('AppBundle:Movie')->createQueryBuilder('qb');
@@ -177,4 +177,57 @@ class DefaultController extends Controller
             'movies'=>$movies,
         ]);
     }
+
+    /**
+     * @Route("/categories/",name="categories")
+     */
+    public function categoriesAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $categories = $em->getRepository('AppBundle:Category')->findBy([],['name'=>'ASC']);
+        return $this->render('default/categories.html.twig',[
+            'categories' => $categories
+        ]);
+    }
+
+    /**
+     * @Route("/actors/",name="actors")
+     */
+    public function actorsAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $actors = $em->getRepository('AppBundle:Actor')->findBy([],['name'=>'ASC']);
+        return $this->render('default/actors.html.twig',[
+            'actors' => $actors
+        ]);
+    }
+
+    /**
+     * @Route("/movies/top/",name="top_rated")
+     */
+    public function topRatedAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        // Getting Top 10 rated Movies
+        $qb = $em->getRepository('AppBundle:Movie')->createQueryBuilder('qb');
+        $qb->addOrderBy('qb.starsCount / qb.totalCounts','DESC')->setMaxResults(10);
+        $topRated = $qb->getQuery()->execute();
+
+        return $this->render('default/movie_viewer.html.twig',[
+           "movies" => $topRated,
+            "tag" => "Top Rated"
+        ]);
+    }
+    /**
+     * @Route("/movies/new/",name="new_movies")
+     */
+    public function newMoviesAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        // Getting Top 10 rated Movies
+        // Getting Top 10 new Movies
+        $newMovies = $em->getRepository('AppBundle:Movie')->findBy([],['year'=>'DESC'],12);
+
+        return $this->render('default/movie_viewer.html.twig',[
+            "movies" => $newMovies,
+            "tag" => "New Movies"
+        ]);
+    }
+
 }

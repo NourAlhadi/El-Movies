@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- New Movies -->
+    <div class="container blocks">
+        <h2> - {{ tag }}</h2>
+
+        <div class="row">
+            <div class="col-xs-12">
+                {% set cnt = 0 %}
+                {% for movie in movies %}
+                {% if cnt%4 == 0 %}
+                {% if cnt != 0 %}
+            </div>
+            {% endif %}
+            <div class="row">
+                {% endif %}
+                <a href="{{ path('movie',{id:movie.id}) }}">
+                    <div class="col-xs-2 cat">
+                        {% if movie.mainPoster == null %}
+                            <img src="{{ asset('assets/res/mainPoster.png') }}" alt="{{ movie.title }}">
+                        {% else %}
+                            <img src="{{ asset('assets/res/'~movie.mainPoster) }}" alt="{{ movie.title }}">
+                        {% endif %}
+                        <strong class="text-center">{{ movie.title }}</strong>
+                    </div>
+                </a>
+                {% set cnt = cnt + 1 %}
+                {% endfor %}
+                {% if cnt % 4 != 0 %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}
+
+
+{% block stylesheets %}
+<style>
+    .cat{
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px 5px #AAA;
+    background-color: #DDD;
+    margin: 20px 10px;
+    text-align: center;
+    padding: 0;
+    color: #2f2f2f;
+    font-weight: bold;
+    height: 250px;
+    width: 150px;
+    }
+
+    .cat > img{
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    }
+
+    .blocks > .row{
+    margin:0 auto;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row blocks">
+            <div class="panel-heading">
+                <h3>Current Actors</h3>
+                <small> * Click on actor to redirect to movies made by this actor, i.e. movies search</small>
+            </div>
+            <div class="panel-body listing">
+                {% for cat in actors|batch(4) %}
+                    {% for i in cat %}
+                        <a href="{{ path('category',{id:i.id}) }}">
+                            <div class="col-sm-3 cat">
+                                {{ i.name }}
+                            </div>
+                        </a>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .cat{
+            border-radius: 15px;
+            box-shadow: 5px 5px 5px 5px #AAA;
+            background-color: rgba(0,0,0,0.5);
+            margin: 20px 10px;
+            text-align: center;
+            padding: 10px 0;
+            color: #2f2f2f;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}

@@ -115,24 +115,6 @@
             <!-- /.row -->
 
 
-            <!-- Page Heading -->
-            <div class="row panel panel-default">
-                <div class="col-lg-12 panel-heading">
-                    <ol class="breadcrumb">
-                        <li class="active">
-                            <i class="fa fa-dashboard"></i> Notifications
-                        </li>
-                    </ol>
-                </div>
-                <div class="col-sm-12 panel-body notifications">
-                    <div class="row">
-                          <div class="col-sm-offset-1 col-sm-10 alert alert-info">
-                              - Here is My Notification << To Be Implemented >>
-                          </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
 
@@ -142,11 +124,12 @@
 
 {% block stylesheets %}
     <style>
-        .notifications {
-            min-height: 200px;
-            max-height: 500px;
-            overflow: scroll;
+        .panel-body {
+            min-height: 55vh;
             margin:0 auto;
+        }
+        .panel{
+            height: 100%;
         }
     </style>
 {% endblock %}
