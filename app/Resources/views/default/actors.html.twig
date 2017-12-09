@@ -11,7 +11,7 @@
             <div class="panel-body listing">
                 {% for cat in actors|batch(4) %}
                     {% for i in cat %}
-                        <a href="{{ path('category',{id:i.id}) }}">
+                        <a href="{{ path('actor',{id:i.id}) }}">
                             <div class="col-sm-3 cat">
                                 {{ i.name }}
                             </div>
