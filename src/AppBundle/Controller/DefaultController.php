@@ -58,7 +58,9 @@ class DefaultController extends Controller
 
         $movie =$em->getRepository('AppBundle:Movie')->find($id);
 
-
+        if ($movie == null){
+            return $this->render('default/error404.html.twig');
+        }
 
         $form = $this->createFormBuilder(null)
             ->add('comment',TextareaType::class)
@@ -125,5 +127,64 @@ class DefaultController extends Controller
         }
 
         return new Response('Error!', 400);
+    }
+
+
+    /**
+     * @Route("/filter/",name="movie_filter")
+     *
+     * @Method("POST")
+     */
+    public function filterAction(Request $request){
+        $data = $request->get('search');
+
+        $em = $this->getDoctrine()->getManager();
+        $movies = $em->getRepository('AppBundle:Movie')->findAll();
+        $actors = $em->getRepository('AppBundle:Actor')->findAll();
+        $categories = $em->getRepository('AppBundle:Category')->findAll();
+
+        return $this->render('default/filter.html.twig',[
+            'data'=>$data,
+            'movies'=>$movies,
+            'categories'=>$categories,
+            'actors'=>$actors
+        ]);
+    }
+
+
+    /**
+     * @Route("/actor/{id}",name="actor")
+     */
+    public function actorAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        $actor = $em->getRepository('AppBundle:Actor')->find($id);
+
+        if ($actor == null){
+            return $this->render('default/error404.html.twig');
+        }
+
+        $movies = $em->getRepository('AppBundle:Movie')->findAll();
+        return $this->render('default/actor.html.twig',[
+            'actor'=>$actor,
+            'movies'=>$movies,
+        ]);
+    }
+
+    /**
+     * @Route("/category/{id}",name="category")
+     */
+    public function categoryAction(Request $request,$id){
+        $em = $this->getDoctrine()->getManager();
+        $category = $em->getRepository('AppBundle:Category')->find($id);
+
+        if ($category == null){
+            return $this->render('default/error404.html.twig');
+        }
+
+        $movies = $em->getRepository('AppBundle:Movie')->findAll();
+        return $this->render('default/category.html.twig',[
+            'category'=>$category,
+            'movies'=>$movies,
+        ]);
     }
 }

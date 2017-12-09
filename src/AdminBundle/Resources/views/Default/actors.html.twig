@@ -30,9 +30,11 @@
             <div class="panel-body listing">
                 {% for act in actors|batch(6) %}
                     {% for i in act %}
-                        <div class="col-sm-2 cat">
-                            {{ i.name }}
-                        </div>
+                        <a href="{{ path('actor',{id:i.id}) }}">
+                            <div class="col-sm-2 cat">
+                                {{ i.name }}
+                            </div>
+                        </a>
                     {% endfor %}
                 {% endfor %}
             </div>
@@ -64,7 +66,7 @@
                 </div>
 
                 <div class="row">
-                    {{ form_label(eform.new_name, 'Category New Name', {'label_attr': {'class': 'col-sm-2'}}) }}
+                    {{ form_label(eform.new_name, 'Actor New Name', {'label_attr': {'class': 'col-sm-2'}}) }}
                     {{ form_widget(eform.new_name , {'attr': {'class': 'col-sm-8', 'placeholder': 'Actor New Name', 'value': ''} }) }}
                 </div>
 

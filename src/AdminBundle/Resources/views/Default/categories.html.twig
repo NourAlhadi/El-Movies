@@ -30,9 +30,11 @@
             <div class="panel-body listing">
                 {% for cat in categories|batch(6) %}
                         {% for i in cat %}
-                            <div class="col-sm-2 cat">
-                                {{ i.name }}
-                            </div>
+                            <a href="{{ path('category',{id:i.id}) }}">
+                                <div class="col-sm-2 cat">
+                                    {{ i.name }}
+                                </div>
+                            </a>
                         {% endfor %}
                 {% endfor %}
             </div>

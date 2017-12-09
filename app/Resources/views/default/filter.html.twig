@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{# sent values are data(search) movies actors categories  #}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-10 alert alert-info">
+                The Data You Searched For Was: {{ data }}
+            </div>
+        </div>
+        <div class="row blocks">
+            <div class="col-xs-12">
+                <strong>Matched With Movies:</strong>
+            </div>
+            <div class="col-xs-12">
+                {% set cnt = 0 %}
+                {% for movie in movies %}
+                    {% if (movie.title|lower)|heMeans((data|lower)) < 3  or ((data|lower) in (movie.title|lower)) %}
+                        {% if cnt%4 == 0 %}
+                            {% if cnt != 0 %}
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                        {% endif %}
+
+                        <a href="{{ path('movie',{id:movie.id}) }}">
+                            <div class="col-xs-2 cat">
+                                {% if movie.mainPoster == null %}
+                                    <img src="{{ asset('assets/res/mainPoster.png') }}" alt="{{ movie.title }}">
+                                {% else %}
+                                    <img src="{{ asset('assets/res/'~movie.mainPoster) }}" alt="{{ movie.title }}">
+                                {% endif %}
+                                <strong class="text-center">{{ movie.title }}</strong>
+                            </div>
+                        </a>
+                        {% set cnt = cnt + 1 %}
+                    {% endif %}
+                {% endfor %}
+                {% if cnt == 0  %}
+                    <div class="col-xs-12 alert alert-warning">
+                        No Matching Movies!!
+                    </div>
+                {% else %}
+                    {% if cnt % 4 != 0 %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+
+
+        <div class="row blocks">
+            <div class="col-xs-12">
+                <strong>Matched With Actors:</strong>
+            </div>
+            <div class="col-xs-12">
+                {% set cnt = 0 %}
+                {% for actor in actors %}
+                {% if (actor.name|lower)|heMeans((data|lower)) < 3  or ((data|lower) in (actor.name|lower)) %}
+                {% if cnt%4 == 0 %}
+                {% if cnt != 0 %}
+                    </div>
+                {% endif %}
+                    <div class="row">
+                {% endif %}
+                <a href="{{ path('actor',{id:actor.id}) }}">
+                    <div class="col-xs-2 act">
+                        <strong class="text-center">{{ actor.name }}</strong>
+                    </div>
+                </a>
+                {% set cnt = cnt + 1 %}
+                {% endif %}
+                {% endfor %}
+                {% if cnt == 0  %}
+                    <div class="col-xs-12 alert alert-warning">
+                        No Matching Actors!!
+                    </div>
+                {% else %}
+                    {% if cnt % 4 != 0 %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row blocks">
+            <div class="col-xs-12">
+                <strong>Matched With Categories:</strong>
+            </div>
+            <div class="col-xs-12">
+                {% set cnt = 0 %}
+                {% for cat in categories %}
+                {% if (cat.name|lower)|heMeans((data|lower)) < 3  or ((data|lower) in (cat.name|lower)) %}
+                {% if cnt%6 == 0 %}
+                {% if cnt != 0 %}
+            </div>
+            {% endif %}
+            <div class="row">
+                {% endif %}
+                <a href="{{ path('category',{id:cat.id}) }}">
+                    <div class="col-xs-2 act">
+                        <strong class="text-center">{{ cat.name }}</strong>
+                    </div>
+                </a>
+                {% set cnt = cnt + 1 %}
+                {% endif %}
+                {% endfor %}
+                {% if cnt == 0  %}
+                    <div class="col-xs-12 alert alert-warning">
+                        No Matching Categories!!
+                    </div>
+                {% else %}
+                    {% if cnt % 6 != 0 %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .cat{
+            border-radius: 15px;
+            box-shadow: 5px 5px 5px 5px #AAA;
+            background-color: #DDD;
+            margin: 20px 10px;
+            text-align: center;
+            padding: 0;
+            color: #2f2f2f;
+            font-weight: bold;
+            height: 250px;
+            width: 150px;
+        }
+
+        .cat > img{
+            max-height: 100%;
+            max-width: 100%;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        .act{
+            border-radius: 15px;
+            box-shadow: 5px 5px 5px 5px #AAA;
+            background-color: #EEE;
+            margin: 20px 10px;
+            text-align: center;
+            padding: 20px;
+            color: #2f2f2f;
+            font-weight: bold;
+            height: auto;
+            width: auto;
+        }
+    </style>
+{% endblock %}
